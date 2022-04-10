@@ -1,7 +1,19 @@
-import { MultipartReader } from "https://deno.land/std/mime/mod.ts";
+import {MultipartReader} from "https://deno.land/std/mime/mod.ts";
+import {StringReader} from "https://deno.land/std/io/readers.ts"
 
 const getURL = async () => {
 
+}
+
+const getForm = async (req: Request, b: string[]): Promise<any> => {
+    let body = await req.text();
+    if (b[1]){
+        const sr = new StringReader(body);
+        const mr = new MultipartReader(sr, b[1].split("=")[1]);
+        return await mr.readForm(10240);
+    } else {
+        return body;
+    }
 }
 
 export default async (req: Request): Promise<any> => {
@@ -14,8 +26,7 @@ export default async (req: Request): Promise<any> => {
             console.log("urldata");
             return req.text();
         case "multipart/form-data":
-            console.log("formdata");
-            return req.text();
+            return await getForm(req, reqType);
         default:
             return req.text();
     }
