@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std@0.134.0/http/server.ts";
+import { serve } from "https://deno.land/std/http/server.ts";
 import Router from "./router.ts";
 import body_parse from "./body_parse.ts";
 
@@ -39,7 +39,6 @@ export default class {
                 is404 = false;
                 if (req.body) {
                     body = await body_parse(req);
-                    console.log(body);
                 }
                 r.headers = req.headers;
                 r.method = req.method;
@@ -53,7 +52,6 @@ export default class {
         if(is404){
             if (req.body) {
                 body = await body_parse(req);
-                console.log(body);
             }
             r.headers = req.headers;
             r.method = req.method;
