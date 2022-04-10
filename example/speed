@@ -8,7 +8,7 @@ rust                65764           50562
 rust pure hyper     56673           50958
 
 
-req/40s              node client     java client
+req/40s             node client     java client
 Deno                2385k           1954k
 Oak / Deno          1171k           1189k
 Node                2737k           1509k
