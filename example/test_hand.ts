@@ -2,26 +2,34 @@ import {Router} from "../mod.ts";
 
 let v2 = new Router();
 
-const profile = async () => {
-
+const profile = async (req:any, res: any) => {
+    res.reply = "123"
 }
 
 v2.set("/", profile)
 
 const profileRouter = new Router();
 
-profileRouter.set("/", () => {
-
+profileRouter.set("/", (req:any, res:any) => {
+    res.reply = "Hello, World"
 })
 
-profileRouter.set("/edit", () => {
-
+profileRouter.set("/edit/username/:new_username/set", (req: any, res: any) => {
+    res.status = 400
+    res.headers = {
+        "Content-Type": "text/html",
+        "author": "Parthka"
+    }
+    res.reply = "<h1>This Is Edit Page</h1>"
 })
 
-profileRouter.set("/log", () => {
-
+profileRouter.set("/log", (req:any, res:any) => {
+    res.reply = "<h1>Hello, World!"
+    res.headers = {
+        "Content-Type": "text/html"
+    }
 })
 
-v2.pre("/profile", profileRouter)
+v2.pre("/:username", profileRouter)
 
 export default v2
