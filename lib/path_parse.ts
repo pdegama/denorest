@@ -8,7 +8,7 @@ export default (path:string): RegExp => {
             let j, param = "";
             for (j = i + 1; j < path.length; j++) {
                 if (/\w/.test(path.charAt(j))) {
-                    param += path.charAt(j)
+                    param += path.charAt(j);
                 } else {
                     break;
                 }
@@ -20,6 +20,6 @@ export default (path:string): RegExp => {
             str += c;
         }
     }
-    str += "/?$"
+    str += "/?$";
     return new RegExp(str);
 }

@@ -28,7 +28,7 @@ export default class {
             reply: "",
             headers: {},
             status: 200
-        };
+        }
 
         let r:any = {
 
@@ -39,6 +39,7 @@ export default class {
                 is404 = false;
                 if (req.body) {
                     body = await body_parse(req);
+                    console.log(body);
                 }
                 r.headers = req.headers;
                 r.method = req.method;
@@ -52,6 +53,7 @@ export default class {
         if(is404){
             if (req.body) {
                 body = await body_parse(req);
+                console.log(body);
             }
             r.headers = req.headers;
             r.method = req.method;
@@ -70,7 +72,7 @@ export default class {
     //listen server
     listen = async () => {
         serve(this.hand, {port: this.port}).then(_ => {
-            console.log("Server Start!")
+            console.log("Server Start!");
         });
     }
 

@@ -2,7 +2,7 @@ import path_parse from "./path_parse.ts";
 
 class Router {
 
-    public paths: any = {};
+    public paths: any = {}
     public routes: any = [];
     public hands: any = [];
 
@@ -31,8 +31,8 @@ class Router {
             this.hands.push(this.paths[k]);
         }
 
-        this.routes.push("___404")
-        this.hands.push(this.hand404)
+        this.routes.push("___404");
+        this.hands.push(this.hand404);
 
         return {
             routes: this.routes,
