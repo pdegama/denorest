@@ -10,8 +10,9 @@ v2.set("/", profile)
 
 const profileRouter = new Router();
 
-profileRouter.set("/", (req:any, res:any) => {
-    res.reply = "Hello, World"
+profileRouter.set("/", async (req:any, res:any) => {
+    console.log(req.body.values('parthka'), req.method)
+    res.reply = req.body.values('parthka')
 })
 
 profileRouter.set("/edit/username/:new_username/set", (req: any, res: any) => {

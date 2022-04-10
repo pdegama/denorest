@@ -39,6 +39,7 @@ mainRoute.set("/helloworld", async (req: any, res: any) => {
         "Content-Type": "text/html",
         "Set-Cookie": "AUTHOR=parthka"
     }
+    console.log(req.body);
     res.reply = `${req.headers.get('cookie')}
     ${req.body}`
 });
