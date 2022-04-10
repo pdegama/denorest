@@ -49,7 +49,14 @@ export default class {
         }
 
         if(is404){
-            return new Response("Hello, 404!");
+            if (req.body) {
+                body = await req.text();
+            }
+            r.headers = req.headers;
+            r.method = req.method;
+            r.url = req.url;
+            r.body = body;
+            await this.paths.hands[this.paths.routes.length -1](r, res);
         }
 
         return new Response(typeof res.reply === "object" ? JSON.stringify(res.reply) : res.reply,{
