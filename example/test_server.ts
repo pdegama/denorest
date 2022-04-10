@@ -1,7 +1,7 @@
-import {Application, Router} from './mod.ts';
+import {Application, Router} from '../mod.ts';
 import v2 from "./test_hand.ts";
 
-let app = new Application(8888);
+let app = new Application(8002);
 let mainRoute = new Router();
 let secRout = new Router();
 let v1API = new Router();

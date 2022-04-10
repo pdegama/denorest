@@ -1,6 +1,6 @@
 import {serve} from "https://deno.land/std@0.134.0/http/server.ts";
 
-serve(handler, {port: 4242}).then(_ => {
+serve(handler, {port: 8000}).then(_ => {
     console.log("Server Start!")
 });
 
@@ -18,5 +18,5 @@ async function handler(req: Request): Promise<Response> {
         //console.log("Body:", body);
     }
 
-    return new Response("Hello, World!");
+    return new Response("Hello, Deno!");
 }

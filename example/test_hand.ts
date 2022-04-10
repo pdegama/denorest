@@ -1,4 +1,4 @@
-import {Router} from "./mod.ts";
+import {Router} from "../mod.ts";
 
 let v2 = new Router();
 
