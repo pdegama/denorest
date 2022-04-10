@@ -39,7 +39,8 @@ mainRoute.set("/helloworld", async (req: any, res: any) => {
         "Content-Type": "text/html",
         "Set-Cookie": "AUTHOR=parthka"
     }
-    res.reply = req.headers.get('cookie')
+    res.reply = `${req.headers.get('cookie')}
+    ${req.body}`
 });
 
 secRout.pre("/v1", v1API)
