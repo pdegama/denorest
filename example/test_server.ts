@@ -14,7 +14,7 @@ v1API.set("/login", async () => {
 
 })
 
-mainRoute.set("/", async (req: any, res:any) => {
+mainRoute.set("/", async (req: any, res: any) => {
     res.status = 200
     res.headers = {
         "Content-Type": "text/html",
@@ -34,7 +34,7 @@ mainRoute.set("/", async (req: any, res:any) => {
     `
 });
 
-mainRoute.set("/helloworld", async (req:any, res:any) => {
+mainRoute.set("/helloworld", async (req: any, res: any) => {
     console.log(req)
     res.headers = {
         "Content-Type": "text/html",
@@ -43,7 +43,7 @@ mainRoute.set("/helloworld", async (req:any, res:any) => {
     res.reply = req.headers.get('cookie')
 });
 
-secRout.pre("/v1",v1API)
+secRout.pre("/v1", v1API)
 
 secRout.pre("/v2", v2);
 
@@ -52,6 +52,13 @@ secRout.set("/v3", async () => {
 })
 
 mainRoute.pre("/api", secRout);
+
+mainRoute.set404(async (req: any, res: any) => {
+    res.headers = {
+        "Content-Type": "text/html"
+    }
+    res.reply = "<h1>Opps, Page Not Found Bro</h1>"
+})
 
 app.set(mainRoute);
 
