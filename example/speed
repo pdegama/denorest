@@ -1,18 +1,18 @@
-req/1s              node client     java client
-Deno                64991           49580
-Oak / Deno          32919           31012
-Node                70327           36760
-Fastify / Node      60311           32051
-Denorest            62728           47026           // This Framework
-rust                65764           50562
-rust pure hyper     56673           50958
+req/1s
+Deno                49580
+Oak / Deno          31012
+Node                36760
+Fastify / Node      32051
+Denorest            41478   // This Framework
+rust                50562
+rust pure hyper     50958
 
 
-req/40s             node client     java client
-Deno                2385k           1954k
-Oak / Deno          1171k           1189k
-Node                2737k           1509k
-Fastify / Node      2389k           1160k
-Denorest            2510k           1851k           // This Framework
-rust                2606k           1725k
-rust pure hyper     2391k           1672k
+req/40s
+Deno                1954k
+Oak / Deno          1189k
+Node                1509k
+Fastify / Node      1160k
+Denorest            1662k   // This Framework
+rust                1725k
+rust pure hyper     1672k
