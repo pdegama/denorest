@@ -4,7 +4,7 @@ const getURL = async () => {
 
 }
 
-export default async (req: Request): Promise<string> => {
+export default async (req: Request): Promise<any> => {
     let reqType = String(req.headers.get("content-type")).split("; ");
     switch (reqType[0]) {
         case "application/json":
