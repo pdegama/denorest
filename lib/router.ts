@@ -6,8 +6,22 @@ class Router {
     public routes: any = [];
     public hands: any = [];
 
+    public hand404: Function = async (req:any, res:any) => {
+        res.reply = {
+            status: 404,
+            massage: "Route Not Found"
+        }
+        res.headers = {
+            "Content-Type": "application/json"
+        }
+    };
+
     public set = async (path: string, hand: Function) => {
         this.paths[path] = hand;
+    }
+
+    public set404 = async (hand: Function) => {
+        this.hand404 = hand;
     }
 
     public get = async () => {
@@ -16,6 +30,9 @@ class Router {
             this.routes.push(path_parse(k));
             this.hands.push(this.paths[k]);
         }
+
+        this.routes.push("___404")
+        this.hands.push(this.hand404)
 
         return {
             routes: this.routes,
