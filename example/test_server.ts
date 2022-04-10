@@ -35,7 +35,6 @@ mainRoute.set("/", async (req: any, res: any) => {
 });
 
 mainRoute.set("/helloworld", async (req: any, res: any) => {
-    console.log(req)
     res.headers = {
         "Content-Type": "text/html",
         "Set-Cookie": "AUTHOR=parthka"
