@@ -51,7 +51,6 @@ class Router {
 
             this.routes.push(e);
 
-            console.log(path, r.routes)
         }
     }
 
