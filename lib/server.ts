@@ -12,7 +12,8 @@ export default class {
     }
 
     public set = async (r:Router) => {
-        this.paths = await r.get();
+        this.paths = await r.getRoutes();
+        console.log(this.paths)
         //console.log(this.paths);
     }
 
