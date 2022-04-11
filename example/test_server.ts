@@ -6,15 +6,15 @@ let mainRoute = new Router();
 let secRout = new Router();
 let v1API = new Router();
 
-v1API.set("/user", async () => {
+v1API.all("/user", async () => {
 
 })
 
-v1API.set("/login", async () => {
+v1API.all("/login", async () => {
 
 })
 
-mainRoute.set("/", async (req: any, res: any) => {
+mainRoute.all("/", async (req: any, res: any) => {
     res.status = 200
     res.headers = {
         "Content-Type": "text/html",
@@ -34,7 +34,7 @@ mainRoute.set("/", async (req: any, res: any) => {
     `
 });
 
-mainRoute.set("/helloworld", async (req: any, res: any) => {
+mainRoute.all("/helloworld", async (req: any, res: any) => {
     res.headers = {
         "Content-Type": "text/html",
         "Set-Cookie": "AUTHOR=parthka"
@@ -48,19 +48,19 @@ secRout.pre("/v1", v1API)
 
 secRout.pre("/v2", v2);
 
-secRout.set("/v3", async () => {
+secRout.all("/v3", async () => {
 
 })
 
 mainRoute.pre("/api", secRout);
 
-mainRoute.set404(async (req: any, res: any) => {
+mainRoute.all404(async (req: any, res: any) => {
     res.headers = {
         "Content-Type": "text/html"
     }
     res.reply = "<h1>Opps, Page Not Found Bro</h1>"
 })
 
-app.set(mainRoute);
+app.all(mainRoute);
 
 app.listen();
