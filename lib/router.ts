@@ -16,7 +16,7 @@ class Router {
         }
     };
 
-    public set = async (path: string, hand: Function) => {
+    public all = async (path: string, hand: Function) => {
         this.paths[path] = hand;
     }
 
@@ -33,6 +33,8 @@ class Router {
 
         this.routes.push("___404");
         this.hands.push(this.hand404);
+
+        console.log(this.routes)
 
         return {
             routes: this.routes,
