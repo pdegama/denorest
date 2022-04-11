@@ -1,10 +1,14 @@
 import path_parse from "./path_parse.ts";
 
+interface Routes {
+    path: string,
+    method: string,
+    hand: Function
+}
+
 class Router {
 
-    public paths: any = {}
     public routes: any = [];
-    public hands: any = [];
 
     public hand404: Function = async (req:any, res:any) => {
         res.reply = {
@@ -17,7 +21,12 @@ class Router {
     };
 
     public all = async (path: string, hand: Function) => {
-        this.paths[path] = hand;
+        let e: Routes = {
+            path,
+            method: 'ALL',
+            hand
+        }
+        this.routes.push(e);
     }
 
     public set404 = async (hand: Function) => {
@@ -26,26 +35,23 @@ class Router {
 
     public get = async () => {
 
-        for (const k in this.paths) {
-            this.routes.push(path_parse(k));
-            this.hands.push(this.paths[k]);
-        }
 
-        this.routes.push("___404");
-        this.hands.push(this.hand404);
-
-        console.log(this.routes)
-
-        return {
-            routes: this.routes,
-            hands: this.hands
-        }
+        return this.routes
 
     }
 
-    public pre = async (path: string, route: Router) => {
-        for (const pathKey in route.paths) {
-            this.paths[path + (pathKey !== "/" ? pathKey : "")] = route.paths[pathKey];
+    public pre = async (path: string, r: Router) => {
+        for (let i = 0; i < r.routes.length; i++) {
+
+            let e: Routes = {
+                path: (path + (r.routes[i].path !== "/" ? r.routes[i].path : "")),
+                method: r.routes[i].method,
+                hand: r.routes[i].hand
+            }
+
+            this.routes.push(e);
+
+            console.log(path, r.routes)
         }
     }
 
