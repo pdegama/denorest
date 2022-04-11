@@ -4,8 +4,6 @@ Oak / Deno          31012
 Node                36760
 Fastify / Node      32051
 Denorest            41478   // This Framework
-rust                50562
-rust pure hyper     50958
 
 
 req/40s
@@ -14,5 +12,3 @@ Oak / Deno          1189k
 Node                1509k
 Fastify / Node      1160k
 Denorest            1662k   // This Framework
-rust                1725k
-rust pure hyper     1672k
