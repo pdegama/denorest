@@ -20,8 +20,51 @@ class Router {
         }
     };
 
+    // for all req method
     public all = async (path: string, hand: Function) => {
         let e: Routes = { path, method: 'ALL', hand }
+        this.routes.push(e);
+    }
+
+    // for ony GET method
+    public get = async (path: string, hand: Function) => {
+        let e: Routes = { path, method: 'GET', hand }
+        this.routes.push(e);
+    }
+
+    // for ony POST method
+    public post = async (path: string, hand: Function) => {
+        let e: Routes = { path, method: 'POST', hand }
+        this.routes.push(e);
+    }
+
+    // for ony PUT method
+    public put = async (path: string, hand: Function) => {
+        let e: Routes = { path, method: 'PUT', hand }
+        this.routes.push(e);
+    }
+
+    // for ony DELETE method
+    public delete = async (path: string, hand: Function) => {
+        let e: Routes = { path, method: 'DELETE', hand }
+        this.routes.push(e);
+    }
+
+    // for ony OPTIONS method
+    public options = async (path: string, hand: Function) => {
+        let e: Routes = { path, method: 'OPTIONS', hand }
+        this.routes.push(e);
+    }
+
+    // for ony HEAD method
+    public head = async (path: string, hand: Function) => {
+        let e: Routes = { path, method: 'HEAD', hand }
+        this.routes.push(e);
+    }
+
+    // for ony PATCH method
+    public patch = async (path: string, hand: Function) => {
+        let e: Routes = { path, method: 'PATCH', hand }
         this.routes.push(e);
     }
 
@@ -29,8 +72,7 @@ class Router {
         this.hand404 = hand;
     }
 
-    public get = async () => {
-
+    public getRoutes = async () => {
 
         return this.routes
 
