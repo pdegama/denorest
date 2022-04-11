@@ -21,11 +21,7 @@ class Router {
     };
 
     public all = async (path: string, hand: Function) => {
-        let e: Routes = {
-            path,
-            method: 'ALL',
-            hand
-        }
+        let e: Routes = { path, method: 'ALL', hand }
         this.routes.push(e);
     }
 
