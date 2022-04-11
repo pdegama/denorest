@@ -81,7 +81,7 @@ mainRoute.set404(async (req: any, res: any) => {
     res.headers = {
         "Content-Type": "text/html"
     }
-    res.reply = "<h1>Opps, Page Not Found Bro</h1>"
+    res.reply = {error: "Opps, Page Not Found Bro"}
 })
 
 app.set(mainRoute);
