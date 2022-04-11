@@ -5,16 +5,16 @@ import body_parse from "./body_parse.ts";
 export default class {
 
     private port:number = 8080;
-    public paths:any = {};
+    private hand404:any;
+    public routes:any = {};
 
     constructor(port:number = 8000){
         this.port = port;
     }
 
     public set = async (r:Router) => {
-        this.paths = await r.getRoutes();
-        console.log(this.paths)
-        //console.log(this.paths);
+        this.routes = await r.getRoutes();
+        this.hand404 = await this.routes[this.routes.length - 1].hand;
     }
 
     //main handler
@@ -33,8 +33,8 @@ export default class {
 
         let r:any = {}
 
-        for (let i = 0; i < this.paths.routes.length; i++) {
-            if (url.pathname.match(this.paths.routes[i])){
+        for (const ele of this.routes) {
+            if (url.pathname.match(ele.path) && (ele.method === req.method || ele.method === 'ALL')){
                 is404 = false;
                 if (req.body) {
                     body = await body_parse(req);
@@ -43,7 +43,7 @@ export default class {
                 r.method = req.method;
                 r.url = req.url;
                 r.body = body;
-                await this.paths.hands[i](r, res);
+                await ele.hand(r, res);
                 break;
             }
         }
@@ -56,7 +56,7 @@ export default class {
             r.method = req.method;
             r.url = req.url;
             r.body = body;
-            await this.paths.hands[this.paths.routes.length -1](r, res);
+            await this.hand404(r, res);
         }
 
         return new Response(typeof res.reply === "object" ? JSON.stringify(res.reply) : res.reply,{

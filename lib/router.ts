@@ -74,11 +74,24 @@ class Router {
 
     public getRoutes = async () => {
 
+        for (const r of this.routes) {
+            r.path = path_parse(r.path)
+        }
+
+        this.routes.push({
+            name: "___404",
+            methods: "ALL",
+            hand: this.hand404
+        })
+
         return this.routes
 
     }
 
+    // TODO: for to forof loop
+    // add pre routes
     public pre = async (path: string, r: Router) => {
+
         for (let i = 0; i < r.routes.length; i++) {
 
             let e: Routes = {
