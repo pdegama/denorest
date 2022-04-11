@@ -54,13 +54,13 @@ secRout.all("/v3", async () => {
 
 mainRoute.pre("/api", secRout);
 
-mainRoute.all404(async (req: any, res: any) => {
+mainRoute.set404(async (req: any, res: any) => {
     res.headers = {
         "Content-Type": "text/html"
     }
     res.reply = "<h1>Opps, Page Not Found Bro</h1>"
 })
 
-app.all(mainRoute);
+app.set(mainRoute);
 
 app.listen();
