@@ -24,7 +24,21 @@ profileRouter.all("/edit/username/:new_username/set", (req: any, res: any) => {
     res.reply = "<h1>This Is Edit Page</h1>"
 })
 
-profileRouter.all("/log", (req:any, res:any) => {
+profileRouter.get("/log", (req:any, res:any) => {
+    res.reply = "<h1>Hello, World!"
+    res.headers = {
+        "Content-Type": "text/html"
+    }
+})
+
+profileRouter.delete("/delete", (req:any, res:any) => {
+    res.reply = "<h1>Hello, World!"
+    res.headers = {
+        "Content-Type": "text/html"
+    }
+})
+
+profileRouter.post("/log", (req:any, res:any) => {
     res.reply = "<h1>Hello, World!"
     res.headers = {
         "Content-Type": "text/html"

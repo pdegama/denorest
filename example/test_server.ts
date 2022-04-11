@@ -34,6 +34,26 @@ mainRoute.all("/", async (req: any, res: any) => {
     `
 });
 
+mainRoute.post("/", async (req: any, res: any) => {
+    res.status = 200
+    res.headers = {
+        "Content-Type": "text/html",
+        "Set-Cookie": "USER_TOKN=de87df",
+        "X-Firefox-Spdy": "h2"
+    }
+    res.reply = `
+        <html>
+            <body>
+                <form action="/helloworld" method="post">
+                    <input type="text" name="f_name">
+                    <input type="text" name="l_name">
+                    <input type="submit" name="submit">
+                </form>
+            </body>
+        </html>
+    `
+});
+
 mainRoute.all("/helloworld", async (req: any, res: any) => {
     res.headers = {
         "Content-Type": "text/html",
