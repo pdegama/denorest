@@ -14,7 +14,7 @@ v1API.all("/login", async () => {
 
 })
 
-mainRoute.all("/", async (req: any, res: any) => {
+mainRoute.get("/", async (req: any, res: any) => {
     res.status = 200
     res.headers = {
         "Content-Type": "text/html",
@@ -44,6 +44,7 @@ mainRoute.post("/", async (req: any, res: any) => {
     res.reply = `
         <html>
             <body>
+            <h1>POST method</h1>
                 <form action="/helloworld" method="post">
                     <input type="text" name="f_name">
                     <input type="text" name="l_name">
@@ -72,6 +73,8 @@ secRout.all("/v3", async () => {
 
 })
 
+app.listen();
+
 mainRoute.pre("/api", secRout);
 
 mainRoute.set404(async (req: any, res: any) => {
@@ -82,5 +85,3 @@ mainRoute.set404(async (req: any, res: any) => {
 })
 
 app.set(mainRoute);
-
-app.listen();

@@ -11,8 +11,7 @@ v2.all("/", profile)
 const profileRouter = new Router();
 
 profileRouter.all("/", async (req:any, res:any) => {
-    console.log(req.body.values('parthka'), req.method)
-    res.reply = req.body.values('parthka')
+    res.reply = "123"
 })
 
 profileRouter.all("/edit/username/:new_username/set", (req: any, res: any) => {
