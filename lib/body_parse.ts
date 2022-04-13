@@ -1,33 +1,39 @@
 import {MultipartReader} from "https://deno.land/std/mime/mod.ts";
 import {StringReader} from "https://deno.land/std/io/readers.ts"
 
-const getURL = async () => {
-
+const getURL = async (req: any, b: string[]) => {
+    return req.body;
 }
 
-const getForm = async (req: Request, b: string[]): Promise<any> => {
-    let body = await req.text();
-    if (b[1]){
-        const sr = new StringReader(body);
+const getJSON = async (req: any, b: string[]) => {
+    return req.body;
+}
+
+const getForm = async (req: any, b: string[]): Promise<any> => {
+    if (b[1]) {
+        const sr = new StringReader(req.body);
         const mr = new MultipartReader(sr, b[1].split("=")[1]);
         return await mr.readForm(10240);
     } else {
-        return body;
+        return req.body;
     }
 }
 
-export default async (req: Request): Promise<any> => {
-    let reqType = String(req.headers.get("content-type")).split("; ");
-    switch (reqType[0]) {
-        case "application/json":
-            console.log("jaondata");
-            return req.text();
-        case "application/x-www-form-urlencoded":
-            console.log("urldata");
-            return req.text();
-        case "multipart/form-data":
-            return await getForm(req, reqType);
-        default:
-            return req.text();
+export default async (req: any): Promise<any> => {
+
+    if (req.body) {
+        let reqType = String(req.headers.get("content-type")).split("; ");
+        switch (reqType[0]) {
+            case "application/json":
+                return await getJSON(req, reqType);
+            case "application/x-www-form-urlencoded":
+                return await getURL(req, reqType);
+            case "multipart/form-data":
+                return await getForm(req, reqType);
+            default:
+                return req.text();
+        }
+    } else {
+        return "No Boy"
     }
 }
