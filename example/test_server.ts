@@ -1,4 +1,4 @@
-import {Application, Router} from '../mod.ts';
+import {Application, bodyParse, Router} from '../mod.ts';
 import v2 from "./test_hand.ts";
 
 let app = new Application(8888);
@@ -65,9 +65,8 @@ mainRoute.all("/helloworld", async (req: any, res: any) => {
         "Content-Type": "text/html",
         "Set-Cookie": "AUTHOR=parthka"
     }
-    console.log(req.body);
-    res.reply = `${req.headers.get('cookie')}
-    ${req.body}`
+    let s = await bodyParse(req);
+    res.reply = `${s}`
 });
 
 secRout.pre("/v1", v1API)
