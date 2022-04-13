@@ -29,6 +29,11 @@ mainRoute.get("/", async (req: any, res: any) => {
                     <input type="text" name="l_name">
                     <input type="submit" name="submit">
                 </form>
+                <form enctype="multipart/form-data" action="/helloworld" method="post">
+                    <input type="text" name="f_name">
+                    <input type="text" name="l_name">
+                    <input type="submit" name="submit">
+                </form>
             </body>
         </html>
     `
