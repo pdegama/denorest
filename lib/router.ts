@@ -10,6 +10,7 @@ class Router {
 
     public routes: any = [];
 
+    // default 404 status code handler
     public hand404: Function = async (req:any, res:any) => {
         res.reply = {
             status: 404,
