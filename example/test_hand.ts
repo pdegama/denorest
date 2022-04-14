@@ -1,4 +1,4 @@
-import { Router } from "../mod.ts";
+import {bodyParse, Router} from "../mod.ts";
 
 let v2 = new Router();
 
@@ -31,9 +31,12 @@ profileRouter.get("/log", (req: any, res: any) => {
   res.send = "123442342";
 });
 
-profileRouter.post("/log", (req: any, res: any) => {
+profileRouter.post("/log", async (req: any, res: any) => {
+  let body = await bodyParse(req);
   res.reply = {
     m: "POST",
+    fname: body.values("f_name"),
+    add: body.values("address")
   };
   res.headers = {
     "Content-Type": "text/html",
