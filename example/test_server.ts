@@ -67,8 +67,11 @@ mainRoute.all("/helloworld", async (req: any, res: any) => {
     "Content-Type": "text/html",
     "Set-Cookie": "AUTHOR=parthka",
   };
+  console.log("Hello, World!")
   let s = await bodyParse(req);
-  res.reply = `${s}`;
+  console.log(s.files("f12"))
+  console.log("Hello, World 22!")
+  res.reply = `${s.values("f_name")}`;
 });
 
 secRout.pre("/v1", v1API);
@@ -84,7 +87,7 @@ mainRoute.pre("/api", secRout);
 
 mainRoute.set404(async (req: any, res: any) => {
   res.headers = {
-    "Content-Type": "text/html",
+    "Content-Type": "application/json",
   };
   res.reply = { error: "Opps, Page Not Found Bro" };
 });
