@@ -20,6 +20,17 @@ class Router {
     };
   };
 
+  // default 500 status code handler
+  public hand500: Function = async (req: any, res: any) => {
+    res.reply = {
+      status: 500,
+      massage: "Internal Server Error",
+    };
+    res.headers = {
+      "Content-Type": "application/json",
+    };
+  };
+
   // for all req method
   public all = async (path: string, hand: Function) => {
     let e: Routes = { path, method: "ALL", hand };
@@ -72,6 +83,10 @@ class Router {
     this.hand404 = hand;
   };
 
+  public set500 = async (hand: Function) => {
+    this.hand500 = hand;
+  };
+
   public getRoutes = async () => {
     for (const r of this.routes) {
       r.path = path_parse(r.path);
@@ -81,6 +96,12 @@ class Router {
       name: "___404",
       methods: "ALL",
       hand: this.hand404,
+    });
+
+    this.routes.push({
+      name: "___500",
+      methods: "ALL",
+      hand: this.hand500,
     });
 
     return this.routes;
