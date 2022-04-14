@@ -15,6 +15,10 @@ v1API.all("/login", async () => {
 })
 
 mainRoute.get("/", async (req: any, res: any) => {
+    res.reply = "Hello, World!"
+});
+
+mainRoute.get("/123", async (req: any, res: any) => {
     res.status = 200
     res.headers = {
         "Content-Type": "text/html",
