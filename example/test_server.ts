@@ -41,6 +41,10 @@ mainRoute.get("/123", async (req: any, res: any) => {
     `;
 });
 
+mainRoute.all("/123", async (req: any, res: any) => {
+  res.reply = "Hello, World! 123";
+})
+
 mainRoute.post("/", async (req: any, res: any) => {
   res.status = 200;
   res.headers = {
