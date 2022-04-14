@@ -13,7 +13,7 @@ const getForm = async (req: any, b: string[]): Promise<any> => {
   if (b[1]) {
     const sr = new StringReader(req.body);
     const mr = new MultipartReader(sr, b[1].split("=")[1]);
-    return await mr.readForm(10240);
+    return await mr.readForm(20 << 20);
   } else {
     return req.body;
   }
