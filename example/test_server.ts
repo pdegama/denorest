@@ -69,8 +69,6 @@ mainRoute.all("/helloworld", async (req: any, res: any) => {
   };
   console.log("Hello, World!")
   let s = await bodyParse(req);
-  console.log(s.files("f12"))
-  console.log("Hello, World 22!")
   res.reply = `${s.values("f_name")}`;
 });
 
