@@ -4,6 +4,7 @@ import Router from "./router.ts";
 export default class {
   private port: number = 8080;
   private hand404: any;
+  private hand500: any;
   public routes: any = {};
 
   constructor(port: number = 8000) {
@@ -12,7 +13,8 @@ export default class {
 
   public set = async (r: Router) => {
     this.routes = await r.getRoutes();
-    this.hand404 = await this.routes[this.routes.length - 1].hand;
+    this.hand404 = await this.routes[this.routes.length - 2].hand;
+    this.hand500 = await this.routes[this.routes.length - 1].hand;
   };
 
   //main handler
@@ -41,7 +43,11 @@ export default class {
         r.headers = req.headers;
         r.method = req.method;
         r.url = req.url;
-        await ele.hand(r, res);
+        try {
+          await ele.hand(r, res);
+        } catch (e) {
+          await this.hand500(r, res);
+        }
         break;
       }
     }
@@ -53,7 +59,11 @@ export default class {
       r.headers = req.headers;
       r.method = req.method;
       r.url = req.url;
-      await this.hand404(r, res);
+      try {
+        await this.hand404(r, res);
+      } catch (e) {
+        await this.hand500(r, res);
+      }
     }
 
     return new Response(
