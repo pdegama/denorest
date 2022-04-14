@@ -1,63 +1,61 @@
-import {Router} from "../mod.ts";
+import { Router } from "../mod.ts";
 
 let v2 = new Router();
 
-const profile = async (req:any, res: any) => {
-    res.reply = "123"
-}
+const profile = async (req: any, res: any) => {
+  res.reply = "123";
+};
 
-v2.all("/", profile)
+v2.all("/", profile);
 
 const profileRouter = new Router();
 
-profileRouter.all("/", async (req:any, res:any) => {
-    res.reply = "123xyz"
-})
+profileRouter.all("/", async (req: any, res: any) => {
+  res.reply = "123xyz";
+});
 
 profileRouter.all("/edit/username/:new_username/set", (req: any, res: any) => {
-    res.status = 400
-    res.headers = {
-        "Content-Type": "text/html",
-        "author": "Parthka"
-    }
-    res.reply = "<h1>This Is Edit Page</h1>"
-})
+  res.status = 400;
+  res.headers = {
+    "Content-Type": "text/html",
+    "author": "Parthka",
+  };
+  res.reply = "<h1>This Is Edit Page</h1>";
+});
 
-profileRouter.get("/log", (req:any, res:any) => {
-    res.reply = "<h1>Hello, World!"
-    res.headers = {
-        "Content-Type": "text/html"
-    }
-    res.send = "123442342"
-})
+profileRouter.get("/log", (req: any, res: any) => {
+  res.reply = "<h1>Hello, World!";
+  res.headers = {
+    "Content-Type": "text/html",
+  };
+  res.send = "123442342";
+});
 
-profileRouter.post("/log", (req:any, res:any) => {
-    res.reply = {
-        m: "POST"
-    }
-    res.headers = {
-        "Content-Type": "text/html"
-    }
-})
+profileRouter.post("/log", (req: any, res: any) => {
+  res.reply = {
+    m: "POST",
+  };
+  res.headers = {
+    "Content-Type": "text/html",
+  };
+});
 
-profileRouter.all("/log", (req:any, res:any) => {
-    res.reply = {
-        m: "Other"
-    }
-    res.headers = {
-        "Content-Type": "text/html"
-    }
-})
+profileRouter.all("/log", (req: any, res: any) => {
+  res.reply = {
+    m: "Other",
+  };
+  res.headers = {
+    "Content-Type": "text/html",
+  };
+});
 
-profileRouter.delete("/delete", (req:any, res:any) => {
-    res.reply = "<h1>Hello, World!"
-    res.headers = {
-        "Content-Type": "text/html"
-    }
-})
+profileRouter.delete("/delete", (req: any, res: any) => {
+  res.reply = "<h1>Hello, World!";
+  res.headers = {
+    "Content-Type": "text/html",
+  };
+});
 
+v2.pre("/:username", profileRouter);
 
-
-v2.pre("/:username", profileRouter)
-
-export default v2
+export default v2;
