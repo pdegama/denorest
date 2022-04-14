@@ -92,4 +92,11 @@ mainRoute.set404(async (req: any, res: any) => {
   res.reply = { error: "Opps, Page Not Found Bro" };
 });
 
+mainRoute.set500(async (req: any, res: any) => {
+  res.headers = {
+    "Content-Type": "application/json",
+  };
+  res.reply = { error: "Request error" };
+});
+
 app.set(mainRoute);
