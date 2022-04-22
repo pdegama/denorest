@@ -1,4 +1,5 @@
 !example
 !lib
+!api
 !mod.ts
 !vercel.json

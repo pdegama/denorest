@@ -1,0 +1,14 @@
+req/1s
+Deno                49580
+Oak / Deno          31012
+Node                36760
+Fastify / Node      32051
+Denorest            41478   // This Framework
+
+
+req/40s
+Deno                1954k
+Oak / Deno          1189k
+Node                1509k
+Fastify / Node      1160k
+Denorest            1662k   // This Framework
