@@ -1,7 +1,14 @@
 import { Application, bodyParse, Router } from "../mod.ts";
 import v2 from "./test_hand.ts";
 
-let app = new Application(8888);
+let PORT:number = 8888;
+let sysPORT = Deno.env.get("PORT");
+
+if (sysPORT !== undefined){
+  PORT = parseInt(sysPORT)  
+}
+
+let app = new Application(PORT);
 let mainRoute = new Router();
 let secRout = new Router();
 let v1API = new Router();
