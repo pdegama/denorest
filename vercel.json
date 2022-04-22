@@ -1,8 +1,0 @@
-{
-    "version": 2,
-    "functions": {
-        "api/test_server.ts": {
-            "runtime": "vercel-deno@0.3.0"
-        }
-    }
-}
