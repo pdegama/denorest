@@ -1,3 +1,3 @@
-# denorest
+# Denorest
 
 Deno Lightweight framework
