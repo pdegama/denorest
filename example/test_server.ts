@@ -95,6 +95,7 @@ app.listen();
 mainRoute.pre("/api", secRout);
 
 mainRoute.set404(async (req: any, res: any) => {
+  res.status = 404;
   res.headers = {
     "Content-Type": "application/json",
   };
