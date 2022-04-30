@@ -7,8 +7,8 @@ Denorest            41478   // This Framework
 
 
 req/40s
-Deno                1954k
-Oak / Deno          1189k
-Node                1509k
-Fastify / Node      1160k
-Denorest            1662k   // This Framework
+Deno                1954000
+Oak / Deno          1189000
+Node                1509000
+Fastify / Node      1160000
+Denorest            1662000   // This Framework
