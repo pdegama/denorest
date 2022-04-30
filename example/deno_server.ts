@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std@0.134.0/http/server.ts";
+import { serve } from "https://deno.land/std@0.136.0/http/server.ts";
 
 serve(handler, { port: 8000 }).then((_) => {
   console.log("Server Start!");
