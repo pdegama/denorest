@@ -1,7 +1,7 @@
 /*
  * route path to RegExp
  * e.g. 
- *      /profile/:user_name => /^\/profile\/(?<username>[a-zA-Z0-9_ %@]+)\/?$/
+ *      /profile/:user_name => /^\/profile\/(?<user_name>[a-zA-Z0-9_ %@]+)\/?$/
 */
 
 export default (path: string): RegExp => {
