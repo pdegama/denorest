@@ -108,7 +108,7 @@ class Router {
   };
 
   // TODO: for to forof loop
-  // add pre routes
+  // add prefix routes
   public pre = async (path: string, r: Router) => {
     for (let i = 0; i < r.routes.length; i++) {
       let e: Routes = {
