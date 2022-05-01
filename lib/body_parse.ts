@@ -1,3 +1,13 @@
+/*
+ *
+ * client request body parser
+ * support
+ *    application/json
+ *    multipart/form-data
+ *    application/x-www-form-urlencoded
+ *
+ */
+
 import { MultipartReader } from "https://deno.land/std@0.136.0/mime/mod.ts";
 import { StringReader } from "https://deno.land/std@0.136.0/io/readers.ts";
 
