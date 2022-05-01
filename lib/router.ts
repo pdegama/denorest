@@ -1,3 +1,9 @@
+/*
+ *
+ * add and get all routes, add prefix routes, using deffirent method (GET, POST, DELETE, PU...)
+ *
+ */
+
 import path_parse from "./path_parse.ts";
 
 interface Routes {
@@ -95,12 +101,14 @@ class Router {
       r.path = path_parse(r.path);
     }
 
+    // add 404 error handler
     this.routes.push({
       name: "___404",
       methods: "ALL",
       hand: this.hand404,
     });
 
+    // add 500 error handler
     this.routes.push({
       name: "___500",
       methods: "ALL",
