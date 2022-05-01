@@ -79,14 +79,17 @@ class Router {
     this.routes.push(e);
   };
 
+  // for 404 error
   public set404 = async (hand: Function) => {
     this.hand404 = hand;
   };
 
+  // for 500 error
   public set500 = async (hand: Function) => {
     this.hand500 = hand;
   };
 
+  // get all routes in current router
   public getRoutes = async () => {
     for (const r of this.routes) {
       r.path = path_parse(r.path);
