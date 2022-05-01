@@ -1,11 +1,11 @@
 import { Application, bodyParse, Router } from "../mod.ts";
 import v2 from "./test_hand.ts";
 
-let PORT:number = 8888;
+let PORT: number = 8888;
 let sysPORT = Deno.env.get("PORT");
 
-if (sysPORT !== undefined){
-  PORT = parseInt(sysPORT)  
+if (sysPORT !== undefined) {
+  PORT = parseInt(sysPORT);
 }
 
 let app = new Application(PORT);
@@ -50,7 +50,7 @@ mainRoute.get("/123", async (req: any, res: any) => {
 
 mainRoute.all("/123", async (req: any, res: any) => {
   res.reply = "Hello, World! 123";
-})
+});
 
 mainRoute.post("/", async (req: any, res: any) => {
   res.status = 200;
@@ -78,7 +78,7 @@ mainRoute.all("/helloworld", async (req: any, res: any) => {
     "Content-Type": "text/html",
     "Set-Cookie": "AUTHOR=parthka",
   };
-  console.log("Hello, World!")
+  console.log("Hello, World!");
   let s = await bodyParse(req);
   res.reply = `${s.values("f_name")}`;
 });
