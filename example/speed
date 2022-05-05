@@ -1,14 +1,2 @@
-req/1s
-Deno                49580
-Oak / Deno          31012
-Node                36760
-Fastify / Node      32051
-Denorest            41478   // This Framework
-
-
-req/40s
-Deno                1954000
-Oak / Deno          1189000
-Node                1509000
-Fastify / Node      1160000
-Denorest            1662000   // This Framework
+47000 // Core
+45000 // Denorest
