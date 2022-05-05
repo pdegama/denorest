@@ -23,21 +23,23 @@ profileRouter.all("/edit/username/:new_username/set", (req: any, res: any) => {
   res.reply = "<h1>This Is Edit Page</h1>";
 });
 
-profileRouter.get("/log", (req: any, res: any) => {
+const logGET = async (req: any, res: any) => {
   res.reply = "<h1>Hello, World!";
   res.headers = {
     "Content-Type": "text/html",
   };
   res.send = "123442342";
-});
+}
+
+profileRouter.get("/log", logGET);
 
 profileRouter.post("/log", async (req: any, res: any) => {
   let body = await bodyParse(req);
-  console.log(body.files("qwe"));
+  console.log(body.values("123"));
   res.reply = {
     m: "POST",
     fname: body.values("f_name"),
-    add: body.values("address"),
+    add: body.values("address")
   };
   res.headers = {
     "Content-Type": "text/html",
