@@ -9,14 +9,14 @@ import path_parse from "./path_parse.ts";
 interface Routes {
   path: string;
   method: string;
-  hand: Function;
+  hand: unknown;
 }
 
 class Router {
   public routes: any = []; // routes
 
   // default 404 status code handler
-  public hand404: Function = async (req: any, res: any) => {
+  public hand404: unknown = async (req: any, res: any) => {
     res.reply = {
       status: 404,
       massage: "Route Not Found",
@@ -27,7 +27,7 @@ class Router {
   };
 
   // default 500 status code handler
-  public hand500: Function = async (req: any, res: any) => {
+  public hand500: unknown = async (req: any, res: any) => {
     res.reply = {
       status: 500,
       massage: "Internal Server Error",
@@ -38,65 +38,65 @@ class Router {
   };
 
   // for all req method
-  public all = async (path: string, hand: Function) => {
-    let e: Routes = { path, method: "ALL", hand };
+  public all = async (path: string, hand: unknown) => {
+    const e: Routes = { path, method: "ALL", hand };
     this.routes.push(e);
   };
 
   // for only GET method
-  public get = async (path: string, hand: Function) => {
-    let e: Routes = { path, method: "GET", hand };
+  public get = async (path: string, hand: unknown) => {
+    const e: Routes = { path, method: "GET", hand };
     this.routes.push(e);
   };
 
   // for only POST method
-  public post = async (path: string, hand: Function) => {
-    let e: Routes = { path, method: "POST", hand };
+  public post = async (path: string, hand: unknown) => {
+    const e: Routes = { path, method: "POST", hand };
     this.routes.push(e);
   };
 
   // for only PUT method
-  public put = async (path: string, hand: Function) => {
-    let e: Routes = { path, method: "PUT", hand };
+  public put = async (path: string, hand: unknown) => {
+    const e: Routes = { path, method: "PUT", hand };
     this.routes.push(e);
   };
 
   // for only DELETE method
-  public delete = async (path: string, hand: Function) => {
-    let e: Routes = { path, method: "DELETE", hand };
+  public delete = async (path: string, hand: unknown) => {
+    const e: Routes = { path, method: "DELETE", hand };
     this.routes.push(e);
   };
 
   // for only OPTIONS method
-  public options = async (path: string, hand: Function) => {
-    let e: Routes = { path, method: "OPTIONS", hand };
+  public options = async (path: string, hand: unknown) => {
+    const e: Routes = { path, method: "OPTIONS", hand };
     this.routes.push(e);
   };
 
   // for only HEAD method
-  public head = async (path: string, hand: Function) => {
-    let e: Routes = { path, method: "HEAD", hand };
+  public head = async (path: string, hand: unknown) => {
+    const e: Routes = { path, method: "HEAD", hand };
     this.routes.push(e);
   };
 
   // for only PATCH method
-  public patch = async (path: string, hand: Function) => {
-    let e: Routes = { path, method: "PATCH", hand };
+  public patch = (path: string, hand: unknown) => {
+    const e: Routes = { path, method: "PATCH", hand };
     this.routes.push(e);
   };
 
   // for 404 error
-  public set404 = async (hand: Function) => {
+  public set404 = (hand: unknown) => {
     this.hand404 = hand;
   };
 
   // for 500 error
-  public set500 = async (hand: Function) => {
+  public set500 = (hand: unknown) => {
     this.hand500 = hand;
   };
 
   // get all routes in current router
-  public getRoutes = async () => {
+  public getRoutes = () => {
     for (const r of this.routes) {
       r.path = path_parse(r.path);
     }
@@ -119,9 +119,9 @@ class Router {
   };
 
   // add prefix routes
-  public pre = async (path: string, r: Router) => {
+  public pre = (path: string, r: Router) => {
     for (const rp of r.routes) {
-      let e: Routes = {
+      const e: Routes = {
         path: (path + (rp.path !== "/" ? rp.path : "")),
         method: rp.method,
         hand: rp.hand,

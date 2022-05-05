@@ -8,7 +8,7 @@ import { serve } from "https://deno.land/std@0.136.0/http/server.ts";
 import Router from "./router.ts";
 
 export default class {
-  private port: number = 8080; // default Port
+  private port: number; // default Port
   private hand404: any; // 404 route handler
   private hand500: any; // 500 route handler
   public routes: any = {}; // all routes
@@ -57,7 +57,7 @@ export default class {
 
         try {
           await ele.hand(r, res); // call route handler
-        } catch (e) {
+        } catch (_e) {
           await this.hand500(r, res); // if Errors than call 500 route
         }
         break;
@@ -74,7 +74,7 @@ export default class {
       r.url = req.url;
       try {
         await this.hand404(r, res);
-      } catch (e) {
+      } catch (_e) {
         await this.hand500(r, res);
       }
     }
@@ -90,7 +90,7 @@ export default class {
   };
 
   // listen server
-  listen = async () => {
+  listen = () => {
     serve(this.hand, { port: this.port }).then((_) => {
       console.log("Server Start!");
     });
