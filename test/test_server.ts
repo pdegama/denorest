@@ -14,11 +14,11 @@ let secRout = new Router();
 let v1API = new Router();
 
 v1API.all("/user", async (req: any, res: any) => {
-  res.reply = "hello, world"
+  res.reply = "hello, world";
 });
 
 v1API.all("/login", async () => {
-});
+});``
 
 mainRoute.get("/", async (req: any, res: any) => {
   res.reply = "Hello, World!";

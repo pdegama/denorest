@@ -1,7 +1,7 @@
 /*!
  *
  * route path to RegExp
- * e.g. 
+ * e.g.
  *      /profile/:user_name => /^\/profile\/(?<user_name>[a-zA-Z0-9_ %@]+)\/?$/
  *
  */

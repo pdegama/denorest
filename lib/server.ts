@@ -83,8 +83,8 @@ export default class {
     return new Response(
       typeof res.reply === "object" ? JSON.stringify(res.reply) : res.reply,
       {
-        status: res.status,
-        headers: res.headers,
+        status: res.status, // set status code
+        headers: Object.assign(res.headers), // set default and specific handler headers
       },
     );
   };

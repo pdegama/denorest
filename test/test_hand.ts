@@ -27,9 +27,9 @@ const logGET = async (req: any, res: any) => {
   res.reply = '["<h1>Hello, World!"]';
   res.headers = {
     "Content-Type": "text/html",
-    author: "parthka" 
+    author: "parthka",
   };
-}
+};
 
 profileRouter.get("/log", logGET);
 
@@ -39,7 +39,7 @@ profileRouter.post("/log", async (req: any, res: any) => {
   res.reply = {
     m: "POST",
     fname: body.values("f_name"),
-    add: body.values("address")
+    add: body.values("address"),
   };
   res.headers = {
     "Content-Type": "text/html",
