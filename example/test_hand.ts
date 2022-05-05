@@ -33,6 +33,7 @@ profileRouter.get("/log", (req: any, res: any) => {
 
 profileRouter.post("/log", async (req: any, res: any) => {
   let body = await bodyParse(req);
+  console.log(body.files("qwe"));
   res.reply = {
     m: "POST",
     fname: body.values("f_name"),

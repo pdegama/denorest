@@ -11,14 +11,17 @@
 import { MultipartReader } from "https://deno.land/std@0.136.0/mime/mod.ts";
 import { StringReader } from "https://deno.land/std@0.136.0/io/readers.ts";
 
+// TODO
 const getURL = async (req: any, b: string[]) => {
   return req.body;
 };
 
+// TODO
 const getJSON = async (req: any, b: string[]) => {
   return req.body;
 };
 
+// TODO
 const getForm = async (req: any, b: string[]): Promise<any> => {
   if (b[1]) {
     const sr = new StringReader(req.body);
