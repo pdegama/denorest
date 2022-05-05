@@ -13,7 +13,7 @@ interface Routes {
 }
 
 class Router {
-  public routes: any = [];
+  public routes: any = []; // routes
 
   // default 404 status code handler
   public hand404: Function = async (req: any, res: any) => {
