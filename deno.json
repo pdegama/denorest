@@ -4,6 +4,6 @@
     "run": "clear; deno run --allow-net --allow-env --allow-write --allow-read test/test_server.ts",
     "s-speed": "wrk -t 10 -c 100 -d 2 http://localhost:8000/",
     "r-speed": "wrk -t 10 -c 100 -d 2 http://localhost:8888/",
-    "lint": "deno lint lib/"
+    "lint": "clear; deno lint lib/"
   }
 }
