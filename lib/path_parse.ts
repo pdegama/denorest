@@ -1,4 +1,4 @@
-/*
+/*!
  *
  * route path to RegExp
  * e.g. 

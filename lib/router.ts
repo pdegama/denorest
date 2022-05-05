@@ -1,4 +1,4 @@
-/*
+/*!
  *
  * add and get all routes, add prefix routes, using deffirent method (GET, POST, DELETE, PU...)
  *
