@@ -118,18 +118,17 @@ class Router {
     return this.routes;
   };
 
-  // TODO: for to forof loop
   // add prefix routes
   public pre = async (path: string, r: Router) => {
-    for (let i = 0; i < r.routes.length; i++) {
+    for (const rp of r.routes) {
       let e: Routes = {
-        path: (path + (r.routes[i].path !== "/" ? r.routes[i].path : "")),
-        method: r.routes[i].method,
-        hand: r.routes[i].hand,
+        path: (path + (rp.path !== "/" ? rp.path : "")),
+        method: rp.method,
+        hand: rp.hand,
       };
-
       this.routes.push(e);
     }
+
   };
 }
 
