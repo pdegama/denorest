@@ -13,7 +13,8 @@ let mainRoute = new Router();
 let secRout = new Router();
 let v1API = new Router();
 
-v1API.all("/user", async () => {
+v1API.all("/user", async (req: any, res: any) => {
+  res.reply = "hello, world"
 });
 
 v1API.all("/login", async () => {

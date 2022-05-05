@@ -24,11 +24,11 @@ profileRouter.all("/edit/username/:new_username/set", (req: any, res: any) => {
 });
 
 const logGET = async (req: any, res: any) => {
-  res.reply = "<h1>Hello, World!";
+  res.reply = '["<h1>Hello, World!"]';
   res.headers = {
     "Content-Type": "text/html",
+    author: "parthka" 
   };
-  res.send = "123442342";
 }
 
 profileRouter.get("/log", logGET);
