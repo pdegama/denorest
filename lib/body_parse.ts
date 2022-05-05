@@ -32,16 +32,17 @@ const getForm = async (req: any, b: string[]): Promise<any> => {
   }
 };
 
+// return parsed data
 export default async (req: any): Promise<any> => {
   if (req.body) {
     let reqType = String(req.headers.get("content-type")).split("; ");
     switch (reqType[0]) {
       case "application/json":
-        return await getJSON(req, reqType);
-      case "application/x-www-form-urlencoded":
-        return await getURL(req, reqType);
+        return await getJSON(req, reqType); // if content-type is application/json
       case "multipart/form-data":
-        return await getForm(req, reqType);
+        return await getForm(req, reqType); // if content-type is multipart/form-data
+      case "application/x-www-form-urlencoded":
+        return await getURL(req, reqType); // if content-type is x-www-form-urlencoded
       default:
         return req.text();
     }
