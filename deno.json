@@ -1,0 +1,5 @@
+{
+    "tasks": {
+        "run": "clear; deno run --allow-net --allow-env --allow-write --allow-read example/test_server.ts"
+    }
+}
