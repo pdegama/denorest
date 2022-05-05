@@ -115,7 +115,7 @@ class Router {
       hand: this.hand500,
     });
 
-    return this.routes;
+    return this.routes; // return all routes
   };
 
   // add prefix routes
@@ -128,7 +128,6 @@ class Router {
       };
       this.routes.push(e);
     }
-
   };
 }
 
