@@ -1,4 +1,4 @@
-import { Application, bodyParse, Router, Req, Res  } from "../mod.ts";
+import { WenApp, bodyParse, Router, Req, Res  } from "../mod.ts";
 import v2 from "./test_hand.ts";
 
 let PORT: number = 8888;
@@ -8,7 +8,7 @@ if (sysPORT !== undefined) {
   PORT = parseInt(sysPORT);
 }
 
-let app = new Application(PORT);
+let app = new WenApp(PORT);
 app.headers({
   "Content-Type": "application/json",
   author: "pka",

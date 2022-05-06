@@ -4,6 +4,9 @@ let v2 = new Router();
 
 const profile = async (req: Req, res: Res) => {
   res.reply = "123";
+  res.headers = {
+    'Content-type': "text/html"
+  }
 };
 
 v2.all("/", profile);
