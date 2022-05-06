@@ -5,12 +5,7 @@
  */
 
 import path_parse from "./path_parse.ts";
-
-interface Routes {
-  path: string;
-  method: string;
-  hand: unknown;
-}
+import {Req, Res, Routes} from "./types.ts";
 
 class Router {
   public routes: any = []; // routes
@@ -123,6 +118,7 @@ class Router {
     for (const rp of r.routes) {
       const e: Routes = {
         path: (path + (rp.path !== "/" ? rp.path : "")),
+        reg: rp.reg,
         method: rp.method,
         hand: rp.hand,
       };
@@ -131,4 +127,5 @@ class Router {
   };
 }
 
+export type { Req, Res };
 export default Router;

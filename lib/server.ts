@@ -6,12 +6,13 @@
 
 import { serve } from "https://deno.land/std@0.136.0/http/server.ts";
 import Router from "./router.ts";
+import {Req, Res, Routes} from "./types.ts";
 
 export default class {
   private port: number; // default Port
-  private hand404: any; // 404 route handler
-  private hand500: any; // 500 route handler
-  public routes: any = {}; // all routes
+  private hand404 = (_1: Req, _2: Res) => {}; // 404 route handler
+  private hand500 = (_1: Req, _2: Res) => {}; // 500 route handler
+  public routes: Routes[] = []; // all routes
 
   // port configure
   constructor(port: number = 8080) {
@@ -31,18 +32,18 @@ export default class {
 
     let is404 = true;
 
-    let res: any = {
+    const res: Res = {
       reply: "",
       headers: {},
       status: 200,
     };
 
-    let r: any = {};
+    const r: Req = {};
 
     // check all routes to client path
     for (const ele of this.routes) {
       if (
-        url.pathname.match(ele.path) &&
+        url.pathname.match(ele.reg) &&
         (ele.method === req.method || ele.method === "ALL")
       ) {
         is404 = false; // if path found than not call 404
