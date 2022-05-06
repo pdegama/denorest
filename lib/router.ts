@@ -8,10 +8,10 @@ import path_parse from "./path_parse.ts";
 import {Req, Res, Routes} from "./types.ts";
 
 class Router {
-  public routes: any = []; // routes
+  public routes: Routes[] = []; // routes
 
   // default 404 status code handler
-  public hand404: unknown = async (req: any, res: any) => {
+  public hand404 = (_: Req, res: Res): void => {
     res.reply = {
       status: 404,
       massage: "Route Not Found",
@@ -22,7 +22,7 @@ class Router {
   };
 
   // default 500 status code handler
-  public hand500: unknown = async (req: any, res: any) => {
+  public hand500 = (_: Req, res: Res): void => {
     res.reply = {
       status: 500,
       massage: "Internal Server Error",
@@ -33,81 +33,83 @@ class Router {
   };
 
   // for all req method
-  public all = async (path: string, hand: unknown) => {
-    const e: Routes = { path, method: "ALL", hand };
+  public all = (path: string, hand: (req: Req, res: Res) => void) => {
+    const e: Routes = { path, reg: / /, method: "ALL", hand };
     this.routes.push(e);
   };
 
   // for only GET method
-  public get = async (path: string, hand: unknown) => {
-    const e: Routes = { path, method: "GET", hand };
+  public get = (path: string, hand: (req: Req, res: Res) => void) => {
+    const e: Routes = { path, reg: / /, method: "GET", hand };
     this.routes.push(e);
   };
 
   // for only POST method
-  public post = async (path: string, hand: unknown) => {
-    const e: Routes = { path, method: "POST", hand };
+  public post = (path: string, hand: (req: Req, res: Res) => void) => {
+    const e: Routes = { path, reg: / /, method: "POST", hand };
     this.routes.push(e);
   };
 
   // for only PUT method
-  public put = async (path: string, hand: unknown) => {
-    const e: Routes = { path, method: "PUT", hand };
+  public put = (path: string, hand: (req: Req, res: Res) => void) => {
+    const e: Routes = { path, reg: / /, method: "PUT", hand };
     this.routes.push(e);
   };
 
   // for only DELETE method
-  public delete = async (path: string, hand: unknown) => {
-    const e: Routes = { path, method: "DELETE", hand };
+  public delete = (path: string, hand: (req: Req, res: Res) => void) => {
+    const e: Routes = { path, reg: / /, method: "DELETE", hand };
     this.routes.push(e);
   };
 
   // for only OPTIONS method
-  public options = async (path: string, hand: unknown) => {
-    const e: Routes = { path, method: "OPTIONS", hand };
+  public options = (path: string, hand: (req: Req, res: Res) => void) => {
+    const e: Routes = { path, reg: / /, method: "OPTIONS", hand };
     this.routes.push(e);
   };
 
   // for only HEAD method
-  public head = async (path: string, hand: unknown) => {
-    const e: Routes = { path, method: "HEAD", hand };
+  public head = (path: string, hand: (req: Req, res: Res) => void) => {
+    const e: Routes = { path, reg: / /, method: "HEAD", hand };
     this.routes.push(e);
   };
 
   // for only PATCH method
-  public patch = (path: string, hand: unknown) => {
-    const e: Routes = { path, method: "PATCH", hand };
+  public patch = (path: string, hand: (req: Req, res: Res) => void) => {
+    const e: Routes = { path, reg: / /, method: "PATCH", hand };
     this.routes.push(e);
   };
 
   // for 404 error
-  public set404 = (hand: unknown) => {
+  public set404 = (hand: (req: Req, res: Res) => void) => {
     this.hand404 = hand;
   };
 
   // for 500 error
-  public set500 = (hand: unknown) => {
+  public set500 = (hand: (req: Req, res: Res) => void) => {
     this.hand500 = hand;
   };
 
   // get all routes in current router
   public getRoutes = () => {
     for (const r of this.routes) {
-      r.path = path_parse(r.path);
+      r.reg = path_parse(r.path);
     }
 
     // add 404 error handler
     this.routes.push({
-      name: "___404",
-      methods: "ALL",
+      path: "___404",
+      method: "ALL",
       hand: this.hand404,
+      reg: /^___404$/,
     });
 
     // add 500 error handler
     this.routes.push({
-      name: "___500",
-      methods: "ALL",
+      path: "",
+      method: "ALL",
       hand: this.hand500,
+      reg: /^___500$/,
     });
 
     return this.routes; // return all routes
@@ -127,5 +129,4 @@ class Router {
   };
 }
 
-export type { Req, Res };
 export default Router;
