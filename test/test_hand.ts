@@ -27,7 +27,7 @@ profileRouter.all(
 );
 
 const logGET = async (req: Req, res: Res) => {
-  res.reply = '["Hello, World!"]';
+  res.reply = `hello, <b>world</b>`;
   res.headers = {
     "Content-Type": "application/json",
     author: "parthka",

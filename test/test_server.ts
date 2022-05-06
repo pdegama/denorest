@@ -1,4 +1,4 @@
-import { Application, bodyParse, Router } from "../mod.ts";
+import { Application, bodyParse, Router, Req, Res  } from "../mod.ts";
 import v2 from "./test_hand.ts";
 
 let PORT: number = 8888;
@@ -12,7 +12,8 @@ let app = new Application(PORT);
 app.headers({
   "Content-Type": "application/json",
   author: "pka",
-  "x-powered-by": "DenoFS/Denorest"
+  "x-powered-by": "DenoFS/Denorest",
+  "Set-Cookie": "LESTTIME=" + Date(),
 });
 let mainRoute = new Router();
 let secRout = new Router();
@@ -26,10 +27,12 @@ v1API.all("/login", async () => {
 });
 
 mainRoute.get("/", async (req: any, res: any) => {
+  console.log(req.headers.get("cookie"));
+  
   res.reply = "Hello, 123!";
-/*   res.headers = {
-    "Content-Type": "text/html"
-  } */
+  res.headers = {
+    "Content-Type": "text/html",
+  }
 });
 
 mainRoute.get("/123", async (req: any, res: any) => {
@@ -91,6 +94,10 @@ mainRoute.all("/helloworld", async (req: any, res: any) => {
   let s = await bodyParse(req);
   res.reply = `${s.values("f_name")}`;
 });
+
+secRout.all("/",  (req: Req, res: Res) => {
+  res.reply = "Hello, World"
+})
 
 secRout.pre("/v1", v1API);
 
