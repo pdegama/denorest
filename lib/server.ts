@@ -6,9 +6,9 @@
 
 import { serve } from "https://deno.land/std@0.136.0/http/server.ts";
 import Router from "./router.ts";
-import {Req, Res, Routes} from "./types.ts";
+import { Req, Res, Routes } from "./types.ts";
 
-export default class {
+class Server {
   private port: number; // default Port
   private hand404 = (_1: Req, _2: Res) => {}; // 404 route handler
   private hand500 = (_1: Req, _2: Res) => {}; // 500 route handler
@@ -97,3 +97,5 @@ export default class {
     });
   };
 }
+
+export default Server; // export server
