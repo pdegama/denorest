@@ -9,6 +9,11 @@ if (sysPORT !== undefined) {
 }
 
 let app = new Application(PORT);
+app.headers({
+  "Content-Type": "application/json",
+  author: "pka",
+  "x-powered-by": "DenoFS/Denorest"
+});
 let mainRoute = new Router();
 let secRout = new Router();
 let v1API = new Router();
@@ -18,10 +23,13 @@ v1API.all("/user", async (req: any, res: any) => {
 });
 
 v1API.all("/login", async () => {
-});``
+});
 
 mainRoute.get("/", async (req: any, res: any) => {
-  res.reply = "Hello, World!";
+  res.reply = "Hello, 123!";
+/*   res.headers = {
+    "Content-Type": "text/html"
+  } */
 });
 
 mainRoute.get("/123", async (req: any, res: any) => {
@@ -91,16 +99,14 @@ secRout.pre("/v2", v2);
 secRout.all("/v3", async () => {
 });
 
-app.listen();
-
 mainRoute.pre("/api", secRout);
 
 mainRoute.set404(async (req: any, res: any) => {
   res.status = 404;
   res.headers = {
-    "Content-Type": "application/json",
+    "Content-Type": "text/html",
   };
-  res.reply = { error: "Opps, Page Not Found Bro" };
+  res.reply = "hello, I Am 404!";
 });
 
 mainRoute.set500(async (req: any, res: any) => {
@@ -111,3 +117,5 @@ mainRoute.set500(async (req: any, res: any) => {
 });
 
 app.set(mainRoute);
+
+app.listen();

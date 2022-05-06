@@ -1,8 +1,8 @@
-import { bodyParse, Router } from "../mod.ts";
+import { bodyParse, Req, Res, Router } from "../mod.ts";
 
 let v2 = new Router();
 
-const profile = async (req: any, res: any) => {
+const profile = async (req: Req, res: Res) => {
   res.reply = "123";
 };
 
@@ -10,30 +10,33 @@ v2.all("/", profile);
 
 const profileRouter = new Router();
 
-profileRouter.all("/", async (req: any, res: any) => {
+profileRouter.all("/", async (req: Req, res: Res) => {
   res.reply = "123xyz";
 });
 
-profileRouter.all("/edit/username/:new_username/set", (req: any, res: any) => {
-  res.status = 400;
-  res.headers = {
-    "Content-Type": "text/html",
-    "author": "Parthka",
-  };
-  res.reply = "<h1>This Is Edit Page</h1>";
-});
+profileRouter.all(
+  "/edit/username/:new_username/set",
+  async (req: Req, res: Res) => {
+    res.status = 400;
+    res.headers = {
+     /*  "Content-Type": "text/html", */
+      "author": "Parthka",
+    };
+    res.reply = "<h1>This Is Edit Page</h1>";
+  },
+);
 
-const logGET = async (req: any, res: any) => {
-  res.reply = '["<h1>Hello, World!"]';
+const logGET = async (req: Req, res: Res) => {
+  res.reply = '["Hello, World!"]';
   res.headers = {
-    "Content-Type": "text/html",
+    "Content-Type": "application/json",
     author: "parthka",
   };
 };
 
 profileRouter.get("/log", logGET);
 
-profileRouter.post("/log", async (req: any, res: any) => {
+profileRouter.post("/log", async (req: Req, res: Res) => {
   let body = await bodyParse(req);
   console.log(body.values("123"));
   res.reply = {
@@ -46,7 +49,7 @@ profileRouter.post("/log", async (req: any, res: any) => {
   };
 });
 
-profileRouter.all("/log", (req: any, res: any) => {
+profileRouter.all("/log", async (req: Req, res: Res) => {
   res.reply = {
     m: "Other",
   };
@@ -55,10 +58,11 @@ profileRouter.all("/log", (req: any, res: any) => {
   };
 });
 
-profileRouter.delete("/delete", (req: any, res: any) => {
-  res.reply = "<h1>Hello, World!";
+profileRouter.all("/delete", async (req: Req, res: Res) => {
+  res.reply = "[123]";
   res.headers = {
     "Content-Type": "text/html",
+    "stamp": Date().toLocaleLowerCase()
   };
 });
 
