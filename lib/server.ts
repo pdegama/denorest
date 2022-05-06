@@ -13,12 +13,16 @@ class Server {
   private hand404 = (_1: Req, _2: Res) => {}; // 404 route handler
   private hand500 = (_1: Req, _2: Res) => {}; // 500 route handler
   public routes: Routes[] = []; // all routes
+  private dHeaders: Record<string, string> = {};
 
   // port configure
   constructor(port: number = 8080) {
     this.port = port;
   }
 
+  /* Set default headers */
+  public headers = (headers: Record<string, string>) => this.dHeaders = headers;
+  
   // set routes
   public set = async (r: Router) => {
     this.routes = await r.getRoutes(); // set all routes
@@ -85,16 +89,14 @@ class Server {
       typeof res.reply === "object" ? JSON.stringify(res.reply) : res.reply,
       {
         status: res.status, // set status code
-        headers: Object.assign(res.headers), // set default and specific handler headers
+        headers: {...this.dHeaders, ...res.headers}, // set default and specific handler headers
       },
     );
   };
 
   // listen server
   listen = () => {
-    serve(this.hand, { port: this.port }).then((_) => {
-      console.log("Server Start!");
-    });
+    serve(this.hand, { port: this.port });
   };
 }
 
