@@ -5,7 +5,7 @@
  */
 
 import path_parse from "./path_parse.ts";
-import {Req, Res, Routes} from "./types.ts";
+import { Req, Res, Routes } from "./types.ts";
 
 class Router {
   public routes: Routes[] = []; // routes
