@@ -1,4 +1,4 @@
-import { WenApp, bodyParse, Router, Req, Res  } from "../mod.ts";
+import { bodyParse, Req, Res, Router, WenApp } from "../mod.ts";
 import v2 from "./test_hand.ts";
 
 let PORT: number = 8888;
@@ -9,7 +9,6 @@ if (sysPORT !== undefined) {
 }
 
 let app = new WenApp();
-app.allowMoreExp(true);
 
 app.headers({
   "Content-Type": "application/json",
@@ -29,19 +28,17 @@ v1API.all("/login", async () => {
 });
 
 mainRoute.get("/", async (req: any, res: any) => {
-  //console.log(req.headers.get("cookie"));
-  
-  res.reply = "Hello, 123!";
+  res.reply = "123";
   res.headers = {
     "Content-Type": "text/html",
-  }
+  };
 });
 
 mainRoute.get("/123", async (req: any, res: any) => {
   res.status = 200;
   res.headers = {
     "Content-Type": "text/html",
-    "Set-Cookie": "USER_TOKN=de87df"
+    "Set-Cookie": "USER_TOKN=de87df",
   };
   res.reply = `
         <html>
@@ -95,9 +92,9 @@ mainRoute.all("/helloworld", async (req: any, res: any) => {
   res.reply = `${s.values("f_name")[0]}`;
 });
 
-secRout.all("/",  (req: Req, res: Res) => {
-  res.reply = "Hello, World"
-})
+secRout.all("/", (req: Req, res: Res) => {
+  res.reply = "Hello, World";
+});
 
 secRout.pre("/v1", v1API);
 
@@ -107,7 +104,6 @@ secRout.all("/v3", async () => {
 });
 
 mainRoute.pre("/api", secRout);
-
 
 app.set(mainRoute);
 
@@ -127,4 +123,3 @@ app.set500(async (req: any, res: any) => {
   };
   res.reply = { error: "Request error" };
 });
-

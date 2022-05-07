@@ -5,8 +5,8 @@ let v2 = new Router();
 const profile = async (req: Req, res: Res) => {
   res.reply = "123";
   res.headers = {
-    'Content-type': "text/html"
-  }
+    "Content-type": "text/html",
+  };
 };
 
 v2.all("/", profile);
@@ -20,6 +20,8 @@ profileRouter.all("/", async (req: Req, res: Res) => {
 profileRouter.all(
   "/edit/username/:new_username/set",
   async (req: Req, res: Res) => {
+    console.log(req);
+
     res.status = 400;
     res.headers = {
       "Content-Type": "text/html",
@@ -65,7 +67,7 @@ profileRouter.all("/delete", async (req: Req, res: Res) => {
   res.reply = "[123]";
   res.headers = {
     "Content-Type": "text/html",
-    "stamp": Date().toLocaleLowerCase()
+    "stamp": Date().toLocaleLowerCase(),
   };
 });
 

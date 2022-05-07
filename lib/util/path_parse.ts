@@ -24,8 +24,8 @@ export default (path: string, moreExp?: boolean): RegExp => {
       str += !moreExp
         // if !more exp
         ? `(?<${param}>[a-zA-Z0-9_ %@]+)`
-        // if more exp
-        : `(?<${param}>[a-zA-Z0-9 !@#\$%\\^\&*\)\(+=._;:]+)`;
+        : // if more exp
+          `(?<${param}>[a-zA-Z0-9 !@#\$%\\^\&*\)\(+=._;:]+)`;
       i = j - 1;
     } else {
       str += c;
