@@ -1,4 +1,4 @@
-import { bodyParse, Req, Res, Router } from "../mod.ts";
+import { bodyParse, pathParse, Req, Res, Router } from "../mod.ts";
 
 let v2 = new Router();
 
@@ -20,7 +20,7 @@ profileRouter.all("/", async (req: Req, res: Res) => {
 profileRouter.all(
   "/edit/username/:new_username/set",
   async (req: Req, res: Res) => {
-    console.log(req);
+    console.log(pathParse(req));
 
     res.status = 400;
     res.headers = {

@@ -1,4 +1,4 @@
-import { bodyParse, Req, Res, Router, WenApp } from "../mod.ts";
+import { bodyParse, Req, Res, Router, WenApp, pathParse } from "../mod.ts";
 import v2 from "./test_hand.ts";
 
 let PORT: number = 8888;
@@ -9,6 +9,7 @@ if (sysPORT !== undefined) {
 }
 
 let app = new WenApp();
+app.allowMoreExp(true);
 
 app.headers({
   "Content-Type": "application/json",
@@ -28,6 +29,8 @@ v1API.all("/login", async () => {
 });
 
 mainRoute.get("/", async (req: any, res: any) => {
+  console.log(pathParse(req));
+  
   res.reply = "123";
   res.headers = {
     "Content-Type": "text/html",
@@ -103,7 +106,7 @@ secRout.pre("/v2", v2);
 secRout.all("/v3", async () => {
 });
 
-mainRoute.pre("/api", secRout);
+mainRoute.pre("/:api", secRout);
 
 app.set(mainRoute);
 
