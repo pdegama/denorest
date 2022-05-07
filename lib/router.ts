@@ -59,9 +59,9 @@ class Router {
   };
 
   // get all routes in current router
-  public getRoutes = () => {
+  public getRoutes = (m?: boolean) => {
     for (const r of this.routes) {
-      r.reg = path_parse(r.path);
+      r.reg = path_parse(r.path, m);
     }
     return this.routes; // return all routes
   };

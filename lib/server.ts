@@ -10,7 +10,8 @@ import { Req, Res, Routes } from "./types.ts";
 
 class Server {
   public routes: Routes[] = []; // all routes
-  private dHeaders: Record<string, string> = {};
+  private dHeaders: Record<string, string> = {}; // default headers
+  private allowME: boolean = false; // more Exp var
 
   // default 404 status code handler
   private hand404 = (_: Req, res: Res): void => {
@@ -36,6 +37,9 @@ class Server {
 
   // Set default headers
   public headers = (headers: Record<string, string>) => this.dHeaders = headers;
+
+  // set more path Exp
+  public allowMoreExp = (allow: boolean) => this.allowME = allow;
 
   // set routes
   public set = async (r: Router) => {
