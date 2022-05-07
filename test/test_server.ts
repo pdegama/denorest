@@ -8,7 +8,7 @@ if (sysPORT !== undefined) {
   PORT = parseInt(sysPORT);
 }
 
-let app = new WenApp(PORT);
+let app = new WenApp();
 app.headers({
   "Content-Type": "application/json",
   author: "pka",
@@ -90,9 +90,8 @@ mainRoute.all("/helloworld", async (req: any, res: any) => {
     "Content-Type": "text/html",
     "Set-Cookie": "AUTHOR=parthka",
   };
-  console.log("Hello, World!");
   let s = await bodyParse(req);
-  res.reply = `${s.values("f_name")}`;
+  res.reply = `${s.values("f_name")[0]}`;
 });
 
 secRout.all("/",  (req: Req, res: Res) => {
@@ -108,7 +107,12 @@ secRout.all("/v3", async () => {
 
 mainRoute.pre("/api", secRout);
 
-mainRoute.set404(async (req: any, res: any) => {
+
+app.set(mainRoute);
+
+app.listen(PORT);
+
+app.set404(async (req: any, res: any) => {
   res.status = 404;
   res.headers = {
     "Content-Type": "text/html",
@@ -116,13 +120,9 @@ mainRoute.set404(async (req: any, res: any) => {
   res.reply = "hello, I Am 404!";
 });
 
-mainRoute.set500(async (req: any, res: any) => {
+app.set500(async (req: any, res: any) => {
   res.headers = {
     "Content-Type": "application/json",
   };
   res.reply = { error: "Request error" };
 });
-
-app.set(mainRoute);
-
-app.listen();
