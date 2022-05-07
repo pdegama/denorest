@@ -6,7 +6,7 @@
  *
  */
 
-export default (path: string): RegExp => {
+export default (path: string, moreExp?: boolean): RegExp => {
   let str = path.charAt(0) !== "/" ? "^/" : "^";
 
   for (let i = 0; i < path.length; i++) {
@@ -20,8 +20,12 @@ export default (path: string): RegExp => {
           break;
         }
       }
-      //str += `(?<${param}>[a-zA-Z0-9 !@#\$%\\^\&*/\)\(+=._;:]+)`;
-      str += `(?<${param}>[a-zA-Z0-9_ %@]+)`;
+
+      str += !moreExp
+        // if !more exp
+        ? `(?<${param}>[a-zA-Z0-9_ %@]+)`
+        // if more exp
+        : `(?<${param}>[a-zA-Z0-9 !@#\$%\\^\&*\)\(+=._;:]+)`;
       i = j - 1;
     } else {
       str += c;
