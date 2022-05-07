@@ -4,18 +4,16 @@
  *
  */
 
-import { serve } from "https://deno.land/std@0.136.0/http/server.ts";
+import { serve, serveTls } from "https://deno.land/std@0.136.0/http/server.ts";
 import Router from "./router.ts";
 import { Req, Res, Routes } from "./types.ts";
 
 class Server {
-
-  private port: number; // default Port
   public routes: Routes[] = []; // all routes
   private dHeaders: Record<string, string> = {};
 
   // default 404 status code handler
-  public hand404 = (_: Req, res: Res): void => {
+  private hand404 = (_: Req, res: Res): void => {
     res.reply = {
       status: 404,
       massage: "Route Not Found",
@@ -26,7 +24,7 @@ class Server {
   };
 
   // default 500 status code handler
-  public hand500 = (_: Req, res: Res): void => {
+  private hand500 = (_: Req, res: Res): void => {
     res.reply = {
       status: 500,
       massage: "Internal Server Error",
@@ -35,11 +33,6 @@ class Server {
       "Content-Type": "application/json",
     };
   };
-
-  // port configure
-  constructor(port: number = 8080) {
-    this.port = port;
-  }
 
   /* Set default headers */
   public headers = (headers: Record<string, string>) => this.dHeaders = headers;
@@ -124,8 +117,19 @@ class Server {
   };
 
   // listen server
-  listen = () => {
-    serve(this.hand, { port: this.port });
+  public listen = (port: number) => {
+    serve(this.hand, {
+      port: port, // ser port
+    });
+  };
+
+  // listen server on TLS
+  public listenTls = (port: number, certFile: string, keyFile: string) => {
+    serveTls(this.hand, {
+      port: port, // set port
+      certFile, // set cert file
+      keyFile, // set key file
+    });
   };
 }
 
