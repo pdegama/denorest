@@ -9,11 +9,32 @@ import Router from "./router.ts";
 import { Req, Res, Routes } from "./types.ts";
 
 class Server {
+
   private port: number; // default Port
-  private hand404 = (_1: Req, _2: Res) => {}; // 404 route handler
-  private hand500 = (_1: Req, _2: Res) => {}; // 500 route handler
   public routes: Routes[] = []; // all routes
   private dHeaders: Record<string, string> = {};
+
+  // default 404 status code handler
+  public hand404 = (_: Req, res: Res): void => {
+    res.reply = {
+      status: 404,
+      massage: "Route Not Found",
+    };
+    res.headers = {
+      "Content-Type": "application/json",
+    };
+  };
+
+  // default 500 status code handler
+  public hand500 = (_: Req, res: Res): void => {
+    res.reply = {
+      status: 500,
+      massage: "Internal Server Error",
+    };
+    res.headers = {
+      "Content-Type": "application/json",
+    };
+  };
 
   // port configure
   constructor(port: number = 8080) {
@@ -22,12 +43,20 @@ class Server {
 
   /* Set default headers */
   public headers = (headers: Record<string, string>) => this.dHeaders = headers;
-  
+
   // set routes
   public set = async (r: Router) => {
     this.routes = await r.getRoutes(); // set all routes
-    this.hand404 = await this.routes[this.routes.length - 2].hand; // set 404 routes
-    this.hand500 = await this.routes[this.routes.length - 1].hand; // set 500 routes
+  };
+
+  // set 404 error handler
+  public set404 = (hand: (req: Req, res: Res) => void) => {
+    this.hand404 = hand;
+  };
+
+  // set 500 error handler
+  public set500 = (hand: (req: Req, res: Res) => void) => {
+    this.hand500 = hand;
   };
 
   //main handler
@@ -89,7 +118,7 @@ class Server {
       typeof res.reply === "object" ? JSON.stringify(res.reply) : res.reply,
       {
         status: res.status, // set status code
-        headers: {...this.dHeaders, ...res.headers}, // set default and specific handler headers
+        headers: { ...this.dHeaders, ...res.headers }, // set default and specific handler headers
       },
     );
   };
