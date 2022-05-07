@@ -22,7 +22,7 @@ profileRouter.all(
   async (req: Req, res: Res) => {
     res.status = 400;
     res.headers = {
-     /*  "Content-Type": "text/html", */
+      "Content-Type": "text/html",
       "author": "Parthka",
     };
     res.reply = "<h1>This Is Edit Page</h1>";

@@ -9,6 +9,8 @@ if (sysPORT !== undefined) {
 }
 
 let app = new WenApp();
+app.allowMoreExp(true);
+
 app.headers({
   "Content-Type": "application/json",
   author: "pka",
@@ -27,7 +29,7 @@ v1API.all("/login", async () => {
 });
 
 mainRoute.get("/", async (req: any, res: any) => {
-  console.log(req.headers.get("cookie"));
+  //console.log(req.headers.get("cookie"));
   
   res.reply = "Hello, 123!";
   res.headers = {
@@ -39,8 +41,7 @@ mainRoute.get("/123", async (req: any, res: any) => {
   res.status = 200;
   res.headers = {
     "Content-Type": "text/html",
-    "Set-Cookie": "USER_TOKN=de87df",
-    "X-Firefox-Spdy": "h2",
+    "Set-Cookie": "USER_TOKN=de87df"
   };
   res.reply = `
         <html>
@@ -126,3 +127,4 @@ app.set500(async (req: any, res: any) => {
   };
   res.reply = { error: "Request error" };
 });
+
