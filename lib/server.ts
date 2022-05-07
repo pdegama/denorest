@@ -34,12 +34,12 @@ class Server {
     };
   };
 
-  /* Set default headers */
+  // Set default headers
   public headers = (headers: Record<string, string>) => this.dHeaders = headers;
 
   // set routes
   public set = async (r: Router) => {
-    this.routes = await r.getRoutes(); // set all routes
+    this.routes = await r.getRoutes(this.allowME); // set all routes
   };
 
   // set 404 error handler
@@ -52,7 +52,7 @@ class Server {
     this.hand500 = hand;
   };
 
-  //main handler
+  // main handler
   private hand = async (req: Request): Promise<Response> => {
     const url = new URL(req.url);
 
