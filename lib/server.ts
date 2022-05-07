@@ -84,7 +84,8 @@ class Server {
 
         r.headers = req.headers; // set headers
         r.method = req.method; // set methos
-        r.url = req.url; // ser url
+        r.url = req.url; // set url
+        r.reg = ele.reg; // set reg exp
 
         try {
           await ele.hand(r, res); // call route handler

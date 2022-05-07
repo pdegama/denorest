@@ -25,6 +25,7 @@ type Req = {
   headers?: Headers;
   method?: string;
   url?: string;
+  reg?: RegExp;
 };
 
 // export data type
