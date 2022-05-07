@@ -11,7 +11,7 @@ import { Req, Res, Routes } from "./types.ts";
 class Server {
   public routes: Routes[] = []; // all routes
   private dHeaders: Record<string, string> = {}; // default headers
-  private allowME: boolean = false; // more Exp var
+  private allowME = false; // more Exp var
 
   // default 404 status code handler
   private hand404 = (_: Req, res: Res): void => {
