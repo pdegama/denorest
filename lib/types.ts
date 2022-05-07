@@ -24,7 +24,7 @@ type Req = {
   body?: string;
   headers?: Headers;
   method?: string;
-  url?: string;
+  url?: URL;
   reg?: RegExp;
 };
 

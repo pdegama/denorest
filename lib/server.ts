@@ -84,7 +84,7 @@ class Server {
 
         r.headers = req.headers; // set headers
         r.method = req.method; // set methos
-        r.url = req.url; // set url
+        r.url = url; // set url
         r.reg = ele.reg; // set reg exp
 
         try {
@@ -103,7 +103,7 @@ class Server {
       }
       r.headers = req.headers;
       r.method = req.method;
-      r.url = req.url;
+      r.url = url;
       try {
         await this.hand404(r, res);
       } catch (_e) {
