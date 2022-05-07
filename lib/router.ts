@@ -4,7 +4,7 @@
  *
  */
 
-import path_parse from "./util/path_parse.ts";
+import expParse from "./util/path_exp.ts";
 import { Req, Res, Routes } from "./types.ts";
 
 class Router {
@@ -61,7 +61,7 @@ class Router {
   // get all routes in current router
   public getRoutes = (m?: boolean) => {
     for (const r of this.routes) {
-      r.reg = path_parse(r.path, m);
+      r.reg = expParse(r.path, m);
     }
     return this.routes; // return all routes
   };
