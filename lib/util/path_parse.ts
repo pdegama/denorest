@@ -1,6 +1,6 @@
 /*!
  *
- * request url and path parser
+ * request path parser
  *
  */
 
