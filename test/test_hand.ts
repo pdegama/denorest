@@ -22,7 +22,7 @@ profileRouter.all(
   async (req: Req, res: Res) => {
     console.log(pathParse(req));
 
-    res.status = 400;
+    res.status = 200;
     res.headers = {
       "Content-Type": "text/html",
       "author": "Parthka",
@@ -42,6 +42,7 @@ const logGET = async (req: Req, res: Res) => {
 profileRouter.get("/log", logGET);
 
 profileRouter.post("/log", async (req: Req, res: Res) => {
+  console.log(pathParse(req));
   let body = await bodyParse(req);
   console.log(body.values("123"));
   res.reply = {

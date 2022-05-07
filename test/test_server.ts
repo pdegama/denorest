@@ -106,6 +106,9 @@ secRout.pre("/v2", v2);
 secRout.all("/v3", async () => {
 });
 
+mainRoute.all("/apix", (req: Req, res: Res) => {
+  console.log("no bro");
+});
 mainRoute.pre("/:api", secRout);
 
 app.set(mainRoute);
