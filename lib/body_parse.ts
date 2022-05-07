@@ -1,6 +1,6 @@
 /*!
  *
- * client request body parser
+ * request body parser
  * support
  *    application/json
  *    multipart/form-data
