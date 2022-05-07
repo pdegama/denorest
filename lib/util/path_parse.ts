@@ -1,36 +1,20 @@
 /*!
  *
- * route path to RegExp
- * e.g.
- *      /profile/:user_name => /^\/profile\/(?<user_name>[a-zA-Z0-9_ %@]+)\/?$/
+ * request url and path parser
  *
  */
 
-export default (path: string, moreExp?: boolean): RegExp => {
-  let str = path.charAt(0) !== "/" ? "^/" : "^";
+import { Req } from "../types.ts";
 
-  for (let i = 0; i < path.length; i++) {
-    const c = path.charAt(i);
-    if (c === ":") {
-      let j, param = "";
-      for (j = i + 1; j < path.length; j++) {
-        if (/\w/.test(path.charAt(j))) {
-          param += path.charAt(j);
-        } else {
-          break;
-        }
-      }
-
-      str += !moreExp
-        // if !more exp
-        ? `(?<${param}>[a-zA-Z0-9_ %@]+)`
-        : // if more exp
-          `(?<${param}>[a-zA-Z0-9 !@#\$%\\^\&*\)\(+=._;:]+)`;
-      i = j - 1;
-    } else {
-      str += c;
+export default (req: Req): Record<string, string> => {
+  if (req.url && req.reg) {
+    let dPath;
+    try {
+      dPath = decodeURI(req.url.pathname);
+    } catch (_e) {
+      dPath = req.url.pathname;
     }
+    return dPath.match(req.reg)?.groups || {};
   }
-  str += "/?$";
-  return new RegExp(str);
+  return {};
 };
