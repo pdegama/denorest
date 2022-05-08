@@ -103,7 +103,7 @@ class Server {
       }
       r.headers = req.headers;
       r.method = req.method;
-      r.url = url                                 ;
+      r.url = url;
       try {
         await this.hand404(r, res);
       } catch (_e) {
