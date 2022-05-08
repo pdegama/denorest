@@ -1,12 +1,10 @@
 /*!
  *
  * request body parser
- * support
- *    application/json
- *    multipart/form-data
- *    application/x-www-form-urlencoded
  *
  */
+
+// deno-lint-ignore-file
 
 import {
   MultipartFormData,
@@ -15,23 +13,94 @@ import {
 import { StringReader } from "https://deno.land/std@0.136.0/io/readers.ts";
 import { Req } from "../types.ts";
 
-// TODO
-const getURL = (
-  req: Req,
-  _b: string[],
-): string | undefined => {
-  return req.body;
-};
+// application/json parser
+class GetJSON {
+  public field; // body object
+  public text; // body text
+  constructor(
+    req: Req,
+  ) {
+    this.text = req.body;
+    // parse string to object
+    try {
+      this.field = JSON.parse(req.body || "");
+    } catch (_) {
+      this.field = {};
+    }
+  }
+  // return undefined
+  files = () => {
+    return undefined;
+  };
+  // return undefined
+  values = () => {
+    return undefined;
+  };
+  // return value
+  value = (key: string | number) => {
+    return this.field[key];
+  };
+}
 
-// TODO
-const getJSON = (
-  req: Req,
-  _b: string[],
-): string | undefined => {
-  return req.body;
-};
+// application/x-www-form-urlencoded parser
+class GetURL {
+  public field: Record<string, string> = {}; // body object
+  public text; // body text
+  constructor(
+    req: Req,
+  ) {
+    this.text = req.body;
+    // parse string to object
+    if (req.body) {
+      const o = req.body.split("&");
+      for (const p of o) {
+        const l = p.split("=");
+        try {
+          this.field[l[0]] = l[1] ? decodeURI(l[1]) : "";
+        } catch (_) {
+          this.field[l[0]] = l[1] || "";
+        }
+      }
+    }
+  }
+  // return undefined
+  files = () => {
+    return undefined;
+  };
+  // return undefined
+  values = () => {
+    return undefined;
+  };
+  // return value
+  value = (key: string | number) => {
+    return this.field[key];
+  };
+}
 
-// TODO
+// other body type parser
+class GetOther {
+  public field: Record<string, string> = {}; // body object
+  public text; // body text
+  constructor(
+    req: Req,
+  ) {
+    this.text = req.body;
+  }
+  // return undefined
+  files = () => {
+    return undefined;
+  };
+  // return undefined
+  values = () => {
+    return undefined;
+  };
+  // return value
+  value = (_k: string | number) => {
+    return undefined;
+  };
+}
+
+// multipart/form-data parser
 const getForm = async (
   req: Req,
   b: string[],
@@ -48,18 +117,20 @@ const getForm = async (
 // return parsed data
 export default async (
   req: Req,
-): Promise<MultipartFormData | any> => {
+): Promise<any> => {
   if (req.body && req.headers) {
     const reqType = String(req.headers.get("content-type")).split("; ");
     switch (reqType[0]) {
       case "application/json":
-        return getJSON(req, reqType); // if content-type is application/json
+        return new GetJSON(req); // if content-type is application/json
       case "multipart/form-data":
         return await getForm(req, reqType); // if content-type is multipart/form-data
       case "application/x-www-form-urlencoded":
-        return getURL(req, reqType); // if content-type is x-www-form-urlencoded
+        return new GetURL(req); // if content-type is x-www-form-urlencoded
       default:
-        return req.body;
+        return new GetOther(req);
     }
+  } else {
+    return new GetOther(req);
   }
 };
