@@ -6,15 +6,31 @@
 
 import { Req } from "../types.ts";
 
-export default (req: Req): Record<string, string> => {
+export default (req: Req): Record<string, Record<string, string>> => {
   if (req.url && req.reg) {
     let dPath;
     try {
-      dPath = decodeURI(req.url.pathname);
+      dPath = decodeURI(req.url.pathname); // if possible to decode
     } catch (_e) {
-      dPath = req.url.pathname;
+      dPath = req.url.pathname; // not possible to decode
     }
-    return dPath.match(req.reg)?.groups || {};
+
+    // parse query
+    const s = req.url.search.split("?")[1];
+    const query: Record<string, string> = {};
+    if (s) {
+      const o = s.split("&");
+      for (const p of o) {
+        const l = p.split("=");
+        try {
+          query[l[0]] = l[1] ? decodeURI(l[1]) : "";
+        } catch (_) {
+          query[l[0]] = l[1] || "";
+        }
+      }
+    }
+
+    return { params: dPath.match(req.reg)?.groups || {}, query };
   }
-  return {};
+  return { params: {}, query: {} };
 };
