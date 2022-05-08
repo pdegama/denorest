@@ -1,4 +1,20 @@
 import { bodyParse, pathParse, Req, Res, Router } from "../mod.ts";
+import {
+  Bson,
+  MongoClient,
+  ObjectId,
+} from "https://deno.land/x/mongo@v0.29.4/mod.ts";
+
+const client = new MongoClient();
+await client.connect("mongodb://localhost:27017");
+const db = client.database("denorest");
+interface UserSchema {
+  _id: ObjectId;
+  forward: string;
+  username: string;
+  name: String;
+}
+const users = db.collection<UserSchema>("users");
 
 let v2 = new Router();
 
@@ -21,7 +37,6 @@ profileRouter.all(
   "/edit/username/:new_username/set",
   async (req: Req, res: Res) => {
     console.log(pathParse(req));
-
     res.status = 200;
     res.headers = {
       "Content-Type": "text/html",
@@ -42,14 +57,14 @@ const logGET = async (req: Req, res: Res) => {
 profileRouter.get("/log", logGET);
 
 profileRouter.post("/log", async (req: Req, res: Res) => {
-  console.log(pathParse(req));
+  const p = pathParse(req);
   let body = await bodyParse(req);
   console.log(body.values("123"));
-  res.reply = {
-    m: "POST",
-    fname: body.values("f_name"),
-    add: body.values("address"),
-  };
+  const f = users.find({
+  username: p.params.username 
+  })
+
+  res.reply = JSON.stringify(await f.toArray());;
   res.headers = {
     "Content-Type": "text/html",
   };

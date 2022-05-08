@@ -1,4 +1,4 @@
-import { bodyParse, Req, Res, Router, WenApp, pathParse } from "../mod.ts";
+import { bodyParse, pathParse, Req, Res, Router, WenApp } from "../mod.ts";
 import v2 from "./test_hand.ts";
 
 let PORT: number = 8888;
@@ -29,9 +29,9 @@ v1API.all("/login", async () => {
 });
 
 mainRoute.get("/", async (req: any, res: any) => {
-  console.log(pathParse(req));
-  
-  res.reply = "123";
+  /* console.log(pathParse(req)); */
+
+  res.reply = 'pathParse(req)'
   res.headers = {
     "Content-Type": "text/html",
   };
@@ -107,7 +107,7 @@ secRout.all("/v3", async () => {
 });
 
 mainRoute.all("/apix", (req: Req, res: Res) => {
-  console.log("no bro");
+  console.log("apix");
 });
 mainRoute.pre("/:api", secRout);
 
