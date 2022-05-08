@@ -30,7 +30,7 @@ export default (req: Req): Record<string, Record<string, string>> => {
       }
     }
 
-    return { params: dPath.match(req.reg)?.groups || {}, query };
+    return { params: dPath.match(req.reg)?.groups || {}, query }; // return params and query
   }
   return { params: {}, query: {} };
 };
