@@ -51,12 +51,12 @@ profileRouter.get("/log", logGET);
 profileRouter.post("/log", async (req: Req, res: Res) => {
   const p = pathParse(req);
   let body = await bodyParse(req);
-  console.log(body.values("123"));
+  console.log(body.value("123"));
   const f = users.find({
-    username: p.params.username
-  })
+    username: p.params.username,
+  });
 
-  res.reply = JSON.stringify(await f.toArray());;
+  res.reply = JSON.stringify(await f.toArray());
   res.headers = {
     "Content-Type": "text/html",
   };

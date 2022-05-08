@@ -38,11 +38,11 @@ const user = db.collection<UserSchema>("users");
 
 mainRoute.get("/", async (req: any, res: any) => {
   /* console.log(pathParse(req)); */
-  user.insertOne({
+  /* user.insertOne({
     username: "parthka",
     password: "123"
-  })
-  res.reply = 'pathParse(req)'
+  }) */
+  res.reply = "pathParse(req)";
   res.headers = {
     "Content-Type": "text/html",
   };
@@ -77,24 +77,15 @@ mainRoute.all("/123", async (req: any, res: any) => {
 });
 
 mainRoute.post("/", async (req: any, res: any) => {
+  let p = await bodyParse(req);
+  console.log(p.text);
   res.status = 200;
   res.headers = {
     "Content-Type": "text/html",
     "Set-Cookie": "USER_TOKN=de87df",
     "X-Firefox-Spdy": "h2",
   };
-  res.reply = `
-        <html>
-            <body>
-            <h1>POST method</h1>
-                <form action="/helloworld" method="post">
-                    <input type="text" name="f_name">
-                    <input type="text" name="l_name">
-                    <input type="submit" name="submit">
-                </form>
-            </body>
-        </html>
-    `;
+  res.reply = p;
 });
 
 mainRoute.all("/helloworld", async (req: any, res: any) => {
