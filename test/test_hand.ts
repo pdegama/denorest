@@ -1,15 +1,7 @@
 import { bodyParse, pathParse, Req, Res, Router } from "../mod.ts";
-import {
-  Bson,
-  MongoClient,
-  ObjectId,
-} from "https://deno.land/x/mongo@v0.29.4/mod.ts";
+import db from "./dbconf.ts";
 
-const client = new MongoClient();
-await client.connect("mongodb://localhost:27017");
-const db = client.database("denorest");
 interface UserSchema {
-  _id: ObjectId;
   forward: string;
   username: string;
   name: String;
@@ -61,7 +53,7 @@ profileRouter.post("/log", async (req: Req, res: Res) => {
   let body = await bodyParse(req);
   console.log(body.values("123"));
   const f = users.find({
-  username: p.params.username 
+    username: p.params.username
   })
 
   res.reply = JSON.stringify(await f.toArray());;
