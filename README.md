@@ -5,7 +5,7 @@
 Deno lightweight framework for REST API
 
 ```console
-$ deno run https://deno.land/std/examples/welcome.ts
+$ deno run https://raw.githubusercontent.com/slectgit/denorest/main/example/hello.js
 ```
 
 ```javascript
