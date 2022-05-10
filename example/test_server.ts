@@ -1,6 +1,5 @@
-import { bodyParse, pathParse, Req, Res, Router, WenApp } from "../mod.ts";
+import { bodyParse, pathParse, Req, Res, Router, WebApp } from "../mod.ts";
 import v2 from "./test_hand.ts";
-import db from "./dbconf.ts";
 
 let PORT: number = 8888;
 let sysPORT = Deno.env.get("PORT");
@@ -9,7 +8,7 @@ if (sysPORT !== undefined) {
   PORT = parseInt(sysPORT);
 }
 
-let app = new WenApp();
+let app = new WebApp();
 app.allowMoreExp(true);
 
 app.headers({
@@ -28,13 +27,6 @@ v1API.all("/user", async (req: any, res: any) => {
 
 v1API.all("/login", async () => {
 });
-
-interface UserSchema {
-  username: string;
-  password: string;
-}
-
-const user = db.collection<UserSchema>("users");
 
 mainRoute.get("/", async (req: any, res: any) => {
   /* console.log(pathParse(req)); */

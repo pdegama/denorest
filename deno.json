@@ -1,7 +1,7 @@
 {
   "tasks": {
-    "server": "deno run --allow-net --allow-env --allow-write --allow-read test/deno_server.ts",
-    "run": "deno run --allow-net --allow-env --allow-write --allow-read test/test_server.ts",
+    "server": "deno run --allow-net --allow-env --allow-write --allow-read example/deno_server.ts",
+    "run": "deno run --allow-net --allow-env --allow-write --allow-read example/test_server.ts",
     "s-speed": "wrk -t 10 -c 100 -d 2 http://localhost:8000/",
     "r-speed": "wrk -t 10 -c 100 -d 2 http://localhost:8888/",
     "lint": "deno lint lib/"

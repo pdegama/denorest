@@ -1,12 +1,10 @@
 import { bodyParse, pathParse, Req, Res, Router } from "../mod.ts";
-import db from "./dbconf.ts";
 
 interface UserSchema {
   forward: string;
   username: string;
   name: String;
 }
-const users = db.collection<UserSchema>("users");
 
 let v2 = new Router();
 
@@ -52,11 +50,8 @@ profileRouter.post("/log", async (req: Req, res: Res) => {
   const p = pathParse(req);
   let body = await bodyParse(req);
   console.log(body.value("123"));
-  const f = users.find({
-    username: p.params.username,
-  });
 
-  res.reply = JSON.stringify(await f.toArray());
+  res.reply = JSON.stringify({});
   res.headers = {
     "Content-Type": "text/html",
   };
