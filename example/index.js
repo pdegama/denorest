@@ -1,4 +1,4 @@
-import { Router, WebApp } from "../mod.js";
+import { Router, WebApp } from "https://deno.land/x/denorest@v1.0/mod.js";
 
 const app = new WebApp();
 const router = new Router();

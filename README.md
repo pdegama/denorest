@@ -1,20 +1,20 @@
 # Denorest
 
-![Denorest](https://raw.githubusercontent.com/slectgit/denorest-docs/main/denologo-1.png)
+![Denorest](https://raw.githubusercontent.com/slectgit/denorest-docs/master/denologo-1.png)
 
-Deno lightweight framework for REST API
+Deno Lightweight, Minimalist Framework For REST API 🦕 🚀
 
 ```console
-$ deno run https://raw.githubusercontent.com/slectgit/denorest/main/example/hello.js
+$ deno run https://raw.githubusercontent.com/slectgit/denorest/v1.0/example/hello.ts
 ```
 
-```javascript
-import { Router, WebApp } from "../mod.js";
+```typescript
+import { Req, Res, Router, WebApp } from "https://deno.land/x/denorest@v1.0/mod.ts";
 
 const app = new WebApp();
 const router = new Router();
 
-router.get("/", (_eq, res) => {
+router.get("/", (_req: Req, res: Res) => {
   res.reply = "Hello, Deno!";
 });
 
@@ -29,37 +29,40 @@ app.listen(8080);
 * Focus on high performance
 * Content negotiation
 
+## Documentation
+[Website and Documentation](https://denorest.deno.dev/)
+
 ## Philosophy
 
 The Denorest philosophy is to provide small, robust tooling for HTTP servers, making it a great solution for HTTP APIs.
 
 ## Examples
 
-#### JavaScript Example
-
-```javascript
-import { Router, WebApp } from "../mod.js";
-
-const app = new WebApp();
-const router = new Router();
-
-router.get("/", (_eq, res) => {
-  res.reply = "Hello, JavaScript!";
-});
-
-app.set(router);
-app.listen(8080);
-```
-
 #### TypeScript Example
 ```typescript
-import { Req, Res, Router, WebApp } from "../mod.ts";
+import { Req, Res, Router, WebApp } from "https://deno.land/x/denorest@v1.0/mod.ts";
 
 const app = new WebApp();
 const router = new Router();
 
 router.get("/", (_req: Req, res: Res) => {
   res.reply = "Hello, TypeScript!";
+});
+
+app.set(router);
+app.listen(8080);
+```
+
+#### JavaScript Example
+
+```javascript
+import { Router, WebApp } from "https://deno.land/x/denorest@v1.0/mod.js";
+
+const app = new WebApp();
+const router = new Router();
+
+router.get("/", (_eq, res) => {
+  res.reply = "Hello, JavaScript!";
 });
 
 app.set(router);
