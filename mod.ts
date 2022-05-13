@@ -1,3 +1,11 @@
+/*!
+ *
+ * Denorest
+ * Copyright (c) 2022 Parthka <elparthka.2005@gmail.com>
+ * MIT Licensed
+ *
+ */
+
 import WebApp from "./lib/server.ts";
 import Router from "./lib/router.ts";
 import bodyParse from "./lib/util/body_parse.ts";

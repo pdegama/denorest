@@ -1,22 +1,22 @@
 # Denorest
 
-![Denorest](https://raw.githubusercontent.com/slectgit/denorest-docs/master/denologo-1.png)
+![Denorest](https://raw.githubusercontent.com/slectgit/denorest-docs/master/denologo.png)
 
-Deno Lightweight, Minimalist Framework For REST API 🦕 🚀
+Lightweight, Minimalist Framework For REST API 🦕 🚀
 
 ```console
-$ deno run https://raw.githubusercontent.com/slectgit/denorest/v1.0/example/hello.ts
+$ deno run https://raw.githubusercontent.com/slectgit/denorest/v1.1/example/hello.ts
 ```
 
 ```typescript
-import { Req, Res, Router, WebApp } from "https://deno.land/x/denorest@v1.0/mod.ts";
+import { Req, Res, Router, WebApp } from "https://deno.land/x/denorest@v1.1/mod.ts";
 
 const app = new WebApp();
 const router = new Router();
 
 router.get("/", (_req: Req, res: Res) => {
   res.reply = "Hello, Deno!";
-});
+});u
 
 app.set(router);
 app.listen(8080);
@@ -40,7 +40,7 @@ The Denorest philosophy is to provide small, robust tooling for HTTP servers, ma
 
 #### TypeScript Example
 ```typescript
-import { Req, Res, Router, WebApp } from "https://deno.land/x/denorest@v1.0/mod.ts";
+import { Req, Res, Router, WebApp } from "https://deno.land/x/denorest@v1.1/mod.ts";
 
 const app = new WebApp();
 const router = new Router();
@@ -56,7 +56,7 @@ app.listen(8080);
 #### JavaScript Example
 
 ```javascript
-import { Router, WebApp } from "https://deno.land/x/denorest@v1.0/mod.js";
+import { Router, WebApp } from "https://deno.land/x/denorest@v1.1/mod.js";
 
 const app = new WebApp();
 const router = new Router();
