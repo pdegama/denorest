@@ -17,50 +17,50 @@ class Router {
   };
 
   // for all req method
-  public all = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "ALL", hand: [...this.hook, hand] };
+  public all = (path: string, hand: (req: Req, res: Res) => void, hook: ((req: Req, res: Res) => void)[] = []) => {
+    const e: Routes = { path, reg: / /, method: "ALL", hand: [...this.hook, ...hook, hand] };
     this.routes.push(e);
   };
 
   // for only GET method
-  public get = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "GET", hand: [...this.hook, hand] };
+  public get = (path: string, hand: (req: Req, res: Res) => void, hook: ((req: Req, res: Res) => void)[] = []) => {
+    const e: Routes = { path, reg: / /, method: "GET", hand: [...this.hook, ...hook, hand] };
     this.routes.push(e);
   };
 
   // for only POST method
-  public post = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "POST", hand: [...this.hook, hand] };
+  public post = (path: string, hand: (req: Req, res: Res) => void, hook: ((req: Req, res: Res) => void)[] = []) => {
+    const e: Routes = { path, reg: / /, method: "POST", hand: [...this.hook, ...hook, hand] };
     this.routes.push(e);
   };
 
   // for only PUT method
-  public put = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "PUT", hand: [...this.hook, hand] };
+  public put = (path: string, hand: (req: Req, res: Res) => void, hook: ((req: Req, res: Res) => void)[] = []) => {
+    const e: Routes = { path, reg: / /, method: "PUT", hand: [...this.hook, ...hook, hand] };
     this.routes.push(e);
   };
 
   // for only DELETE method
-  public delete = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "DELETE", hand: [...this.hook, hand] };
+  public delete = (path: string, hand: (req: Req, res: Res) => void, hook: ((req: Req, res: Res) => void)[] = []) => {
+    const e: Routes = { path, reg: / /, method: "DELETE", hand: [...this.hook, ...hook, hand] };
     this.routes.push(e);
   };
 
   // for only OPTIONS method
-  public options = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "OPTIONS", hand: [...this.hook, hand] };
+  public options = (path: string, hand: (req: Req, res: Res) => void, hook: ((req: Req, res: Res) => void)[] = []) => {
+    const e: Routes = { path, reg: / /, method: "OPTIONS", hand: [...this.hook, ...hook, hand] };
     this.routes.push(e);
   };
 
   // for only HEAD method
-  public head = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "HEAD", hand: [...this.hook, hand] };
+  public head = (path: string, hand: (req: Req, res: Res) => void, hook: ((req: Req, res: Res) => void)[] = []) => {
+    const e: Routes = { path, reg: / /, method: "HEAD", hand: [...this.hook, ...hook, hand] };
     this.routes.push(e);
   };
 
   // for only PATCH method
-  public patch = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "PATCH", hand: [...this.hook, hand] };
+  public patch = (path: string, hand: (req: Req, res: Res) => void, hook: ((req: Req, res: Res) => void)[] = []) => {
+    const e: Routes = { path, reg: / /, method: "PATCH", hand: [...this.hook, ...hook, hand] };
     this.routes.push(e);
   };
 
@@ -79,7 +79,7 @@ class Router {
         path: (path + (rp.path !== "/" ? rp.path : "")),
         reg: rp.reg,
         method: rp.method,
-        hand: [...this.hook,...rp.hand],
+        hand: [...this.hook, ...rp.hand],
       };
       this.routes.push(e);
     }
