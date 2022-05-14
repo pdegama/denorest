@@ -9,52 +9,58 @@ import { Req, Res, Routes } from "./types.ts";
 
 class Router {
   public routes: Routes[] = []; // routes
+  public hook: ((req: Req, res: Res) => void)[] = [];
+
+  // add hook
+  public use = async (hand: (req: Req, res: Res) => void) => {
+    await this.hook.push(hand);
+  };
 
   // for all req method
   public all = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "ALL", hand };
+    const e: Routes = { path, reg: / /, method: "ALL", hand: [...this.hook, hand] };
     this.routes.push(e);
   };
 
   // for only GET method
   public get = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "GET", hand };
+    const e: Routes = { path, reg: / /, method: "GET", hand: [...this.hook, hand] };
     this.routes.push(e);
   };
 
   // for only POST method
   public post = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "POST", hand };
+    const e: Routes = { path, reg: / /, method: "POST", hand: [...this.hook, hand] };
     this.routes.push(e);
   };
 
   // for only PUT method
   public put = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "PUT", hand };
+    const e: Routes = { path, reg: / /, method: "PUT", hand: [...this.hook, hand] };
     this.routes.push(e);
   };
 
   // for only DELETE method
   public delete = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "DELETE", hand };
+    const e: Routes = { path, reg: / /, method: "DELETE", hand: [...this.hook, hand] };
     this.routes.push(e);
   };
 
   // for only OPTIONS method
   public options = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "OPTIONS", hand };
+    const e: Routes = { path, reg: / /, method: "OPTIONS", hand: [...this.hook, hand] };
     this.routes.push(e);
   };
 
   // for only HEAD method
   public head = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "HEAD", hand };
+    const e: Routes = { path, reg: / /, method: "HEAD", hand: [...this.hook, hand] };
     this.routes.push(e);
   };
 
   // for only PATCH method
   public patch = (path: string, hand: (req: Req, res: Res) => void) => {
-    const e: Routes = { path, reg: / /, method: "PATCH", hand };
+    const e: Routes = { path, reg: / /, method: "PATCH", hand: [...this.hook, hand] };
     this.routes.push(e);
   };
 
@@ -73,7 +79,7 @@ class Router {
         path: (path + (rp.path !== "/" ? rp.path : "")),
         reg: rp.reg,
         method: rp.method,
-        hand: rp.hand,
+        hand: [...this.hook,...rp.hand],
       };
       this.routes.push(e);
     }
