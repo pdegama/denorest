@@ -69,7 +69,7 @@ class Server {
       status: 200,
     };
 
-    const r: Req = {};
+    const r: Req = {state: {}};
 
     // check all routes to client path
     for (const ele of this.routes) {
