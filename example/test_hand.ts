@@ -20,13 +20,13 @@ v2.all("/", profile);
 const profileRouter = new Router();
 const userAuth = (req: Req, res: Res) => {
   res.headers = {
-    "Content-Type": "text/html"
-  }
+    "Content-Type": "text/html",
+  };
 };
 const queryPrint = (req: Req, res: Res) => {
   const body = pathParse(req);
   if (body.params.query !== "unlock") {
-    res.reply = "Opps, I Am Busy!"
+    res.reply = "Opps, I Am Busy!";
   }
 };
 
@@ -83,45 +83,44 @@ const otherRouter = new Router();
 
 otherRouter.use(async (req: Req, res: Res) => {
   res.headers = {
-    "Content-Type": "text"
-  }
-  if(pathParse(req).params.username === "parthka"){
+    "Content-Type": "text",
+  };
+  if (pathParse(req).params.username === "parthka") {
     req.state.auth = true;
-  }else{
+  } else {
     req.state.auth = false;
   }
 });
 
 otherRouter.all("/", (req: Req, res: Res) => {
   console.log(req.state);
-  
+
   res.headers = {
-    ... res.headers,
-    "author": "parthka"
-  }
-  res.reply = "<h1>Hello, On Query Page!</h1>"
+    ...res.headers,
+    "author": "parthka",
+  };
+  res.reply = "<h1>Hello, On Query Page!</h1>";
 });
 
+let or = new Router();
 
-let or = new Router()
+or.get("/", (_, res: Res) => {
+  res.reply = "GET";
+});
 
-or.get("/", (_, res:Res) => {
-  res.reply = "GET"
-})
+or.post("/", (_, res: Res) => {
+  res.reply = "POST";
+});
 
-or.post("/", (_, res:Res) => {
-  res.reply = "POST"
-})
+or.post("/body", async (req: Req, res: Res) => {
+  const body = await bodyParse(req);
+  res.reply = body.value("name");
+}, [() => {}]);
 
-or.post("/body", async (req: Req, res:Res) => {
-  const body = await bodyParse(req)
-  res.reply = body.value("name")
-}, [() => {}])
-
-otherRouter.pre("/pref", or)
+otherRouter.pre("/pref", or);
 
 otherRouter.all("/:query", (req: Req, res: Res) => {
-  res.reply = "Hello, Your Query?"
+  res.reply = "Hello, Your Query?";
 }, [queryPrint, userAuth]);
 
 profileRouter.pre("/other", otherRouter);

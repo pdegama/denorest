@@ -263,7 +263,9 @@ class Server1 {
             headers: {},
             status: 200
         };
-        const r = {};
+        const r = {
+            state: {}
+        };
         for (const ele of this.routes){
             if (url.pathname.match(ele.reg) && (ele.method === req.method || ele.method === "ALL")) {
                 is404 = false;
@@ -275,7 +277,12 @@ class Server1 {
                 r.url = url;
                 r.reg = ele.reg;
                 try {
-                    await ele.hand(r, res);
+                    for (const h of ele.hand){
+                        await h(r, res);
+                        if (await res.reply !== "") {
+                            break;
+                        }
+                    }
                 } catch (_e) {
                     await this.hand500(r, res);
                 }
@@ -340,75 +347,111 @@ const __default = (path2, moreExp)=>{
 };
 class Router {
     routes = [];
-    all = (path3, hand)=>{
+    hook = [];
+    use = async (hand)=>{
+        await this.hook.push(hand);
+    };
+    all = (path3, hand, hook = [])=>{
         const e = {
             path: path3,
             reg: / /,
             method: "ALL",
-            hand
+            hand: [
+                ...this.hook,
+                ...hook,
+                hand
+            ]
         };
         this.routes.push(e);
     };
-    get = (path4, hand)=>{
+    get = (path4, hand, hook = [])=>{
         const e = {
             path: path4,
             reg: / /,
             method: "GET",
-            hand
+            hand: [
+                ...this.hook,
+                ...hook,
+                hand
+            ]
         };
         this.routes.push(e);
     };
-    post = (path5, hand)=>{
+    post = (path5, hand, hook = [])=>{
         const e = {
             path: path5,
             reg: / /,
             method: "POST",
-            hand
+            hand: [
+                ...this.hook,
+                ...hook,
+                hand
+            ]
         };
         this.routes.push(e);
     };
-    put = (path6, hand)=>{
+    put = (path6, hand, hook = [])=>{
         const e = {
             path: path6,
             reg: / /,
             method: "PUT",
-            hand
+            hand: [
+                ...this.hook,
+                ...hook,
+                hand
+            ]
         };
         this.routes.push(e);
     };
-    delete = (path7, hand)=>{
+    delete = (path7, hand, hook = [])=>{
         const e = {
             path: path7,
             reg: / /,
             method: "DELETE",
-            hand
+            hand: [
+                ...this.hook,
+                ...hook,
+                hand
+            ]
         };
         this.routes.push(e);
     };
-    options = (path8, hand)=>{
+    options = (path8, hand, hook = [])=>{
         const e = {
             path: path8,
             reg: / /,
             method: "OPTIONS",
-            hand
+            hand: [
+                ...this.hook,
+                ...hook,
+                hand
+            ]
         };
         this.routes.push(e);
     };
-    head = (path9, hand)=>{
+    head = (path9, hand, hook = [])=>{
         const e = {
             path: path9,
             reg: / /,
             method: "HEAD",
-            hand
+            hand: [
+                ...this.hook,
+                ...hook,
+                hand
+            ]
         };
         this.routes.push(e);
     };
-    patch = (path10, hand)=>{
+    patch = (path10, hand, hook = [])=>{
         const e = {
             path: path10,
             reg: / /,
             method: "PATCH",
-            hand
+            hand: [
+                ...this.hook,
+                ...hook,
+                hand
+            ]
         };
         this.routes.push(e);
     };
@@ -424,7 +467,10 @@ class Router {
                 path: path11 + (rp.path !== "/" ? rp.path : ""),
                 reg: rp.reg,
                 method: rp.method,
-                hand: rp.hand
+                hand: [
+                    ...this.hook,
+                    ...rp.hand
+                ]
             };
             this.routes.push(e);
         }

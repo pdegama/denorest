@@ -9,7 +9,7 @@ type Routes = {
   path: string;
   reg: RegExp;
   method: string;
-  hand:((req: Req, res: Res) => void)[];
+  hand: ((req: Req, res: Res) => void)[];
 };
 
 // Response data type
@@ -26,7 +26,7 @@ type Req = {
   method?: string;
   url?: URL;
   reg?: RegExp;
-  state: Record<string | number, string | number | boolean>
+  state: Record<string | number, string | number | boolean>;
 };
 
 // export data type

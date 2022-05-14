@@ -16,7 +16,8 @@ const router = new Router();
 
 router.get("/", (_req: Req, res: Res) => {
   res.reply = "Hello, Deno!";
-});u
+});
+u;
 
 app.set(router);
 app.listen(8080);
@@ -24,21 +25,24 @@ app.listen(8080);
 
 ## Features
 
-* Support Javascript and TypeScript
-* Robust routing
-* Focus on high performance
-* Content negotiation
+- Support Javascript and TypeScript
+- Robust routing
+- Focus on high performance
+- Content negotiation
 
 ## Documentation
+
 [Website and Documentation](https://denorest.deno.dev/)
 
 ## Philosophy
 
-The Denorest philosophy is to provide small, robust tooling for HTTP servers, making it a great solution for HTTP APIs.
+The Denorest philosophy is to provide small, robust tooling for HTTP servers,
+making it a great solution for HTTP APIs.
 
 ## Examples
 
 #### TypeScript Example
+
 ```typescript
 import { Req, Res, Router, WebApp } from "https://deno.land/x/denorest@v2.0/mod.ts";
 

@@ -22,8 +22,8 @@ let secRout = new Router();
 let v1API = new Router();
 
 v1API.use((_, res: Res) => {
-  res.reply = "Not Available"
-})
+  res.reply = "Not Available";
+});
 
 v1API.all("/user", async (req: any, res: any) => {
   res.reply = "hello, world";
@@ -32,9 +32,8 @@ v1API.all("/user", async (req: any, res: any) => {
 v1API.all("/login", async () => {
 });
 
-
 mainRoute.use((req: Req, res: Res) => {
-  req.state.token = "ad8adkmdw"
+  req.state.token = "ad8adkmdw";
   //console.log(`path: ${req.url?.pathname} time: ${Date()}`);
 });
 
@@ -111,7 +110,7 @@ secRout.all("/v3", async () => {
 }, [async (req: Req, res: Res) => {
   console.log(req);
 }, async (_, res: Res) => {
-  res.reply = "v3"
+  res.reply = "v3";
 }]);
 
 mainRoute.all("/apix", (req: Req, res: Res) => {
