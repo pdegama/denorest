@@ -44,6 +44,7 @@ class Server {
   // set routes
   public set = async (r: Router) => {
     this.routes = await r.getRoutes(this.allowME); // set all routes
+    console.log(this.routes);
   };
 
   // set 404 error handler
@@ -88,7 +89,12 @@ class Server {
         r.reg = ele.reg; // set reg exp
 
         try {
-          await ele.hand(r, res); // call route handler
+          for (const h of ele.hand) {
+            await h(r, res); // calls route handler
+            if (res.reply !== "") {
+              break;
+            }
+          }
         } catch (_e) {
           await this.hand500(r, res); // if Errors than call 500 route
         }
