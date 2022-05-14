@@ -44,7 +44,6 @@ class Server {
   // set routes
   public set = async (r: Router) => {
     this.routes = await r.getRoutes(this.allowME); // set all routes
-    console.log(this.routes);
   };
 
   // set 404 error handler
