@@ -17,7 +17,6 @@ type Res = {
   reply: string | Record<string | number, string | number>;
   headers: Record<string, string>;
   status: number;
-  over?: boolean; 
 };
 
 // Request data type
