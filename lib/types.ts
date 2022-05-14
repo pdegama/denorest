@@ -26,6 +26,7 @@ type Req = {
   method?: string;
   url?: URL;
   reg?: RegExp;
+  state: Record<string | number, string | number>
 };
 
 // export data type
