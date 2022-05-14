@@ -21,6 +21,10 @@ let mainRoute = new Router();
 let secRout = new Router();
 let v1API = new Router();
 
+v1API.use((_, res: Res) => {
+  res.reply = "Not Available"
+})
+
 v1API.all("/user", async (req: any, res: any) => {
   res.reply = "hello, world";
 });
@@ -104,7 +108,11 @@ secRout.pre("/v1", v1API);
 secRout.pre("/v2", v2);
 
 secRout.all("/v3", async () => {
-});
+}, [async (req: Req, res: Res) => {
+  console.log(req);
+}, async (_, res: Res) => {
+  res.reply = "v3"
+}]);
 
 mainRoute.all("/apix", (req: Req, res: Res) => {
   console.log("apix");

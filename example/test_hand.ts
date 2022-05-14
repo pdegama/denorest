@@ -18,7 +18,11 @@ const profile = async (req: Req, res: Res) => {
 v2.all("/", profile);
 
 const profileRouter = new Router();
-const userAuth = (req: Req, res: Res) => [];
+const userAuth = (req: Req, res: Res) => {
+  res.headers = {
+    "Content-Type": "text/html"
+  }
+};
 const queryPrint = (req: Req, res: Res) => {
   const body = pathParse(req);
   if (body.params.query !== "unlock") {
@@ -79,7 +83,7 @@ const otherRouter = new Router();
 
 otherRouter.use(async (req: Req, res: Res) => {
   res.headers = {
-    "Content-Type": "text/html"
+    "Content-Type": "text"
   }
   if(pathParse(req).params.username === "parthka"){
     req.state.auth = true;
@@ -97,6 +101,24 @@ otherRouter.all("/", (req: Req, res: Res) => {
   }
   res.reply = "<h1>Hello, On Query Page!</h1>"
 });
+
+
+let or = new Router()
+
+or.get("/", (_, res:Res) => {
+  res.reply = "GET"
+})
+
+or.post("/", (_, res:Res) => {
+  res.reply = "POST"
+})
+
+or.post("/body", async (req: Req, res:Res) => {
+  const body = await bodyParse(req)
+  res.reply = body.value("name")
+}, [() => {}])
+
+otherRouter.pre("/pref", or)
 
 otherRouter.all("/:query", (req: Req, res: Res) => {
   res.reply = "Hello, Your Query?"
