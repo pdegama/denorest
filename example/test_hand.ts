@@ -76,13 +76,15 @@ otherRouter.use(async (req: Req, res: Res) => {
     "Content-Type": "text/html"
   }
   if(pathParse(req).params.username === "parthka"){
-    console.log("Hello, Parthka");
+    req.state.auth = true;
   }else{
-    res.reply = "123"
+    req.state.auth = false;
   }
 });
 
 otherRouter.all("/", (req: Req, res: Res) => {
+  console.log(req.state);
+  
   res.headers = {
     ... res.headers,
     "author": "parthka"

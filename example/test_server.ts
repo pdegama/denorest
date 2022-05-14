@@ -30,6 +30,7 @@ v1API.all("/login", async () => {
 
 
 mainRoute.use((req: Req, res: Res) => {
+  req.state.token = "ad8adkmdw"
   //console.log(`path: ${req.url?.pathname} time: ${Date()}`);
 });
 
