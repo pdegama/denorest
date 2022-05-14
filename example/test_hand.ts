@@ -19,6 +19,12 @@ v2.all("/", profile);
 
 const profileRouter = new Router();
 const userAuth = (req: Req, res: Res) => [];
+const queryPrint = (req: Req, res: Res) => {
+  const body = pathParse(req);
+  if (body.params.query !== "unlock") {
+    res.reply = "Opps, I Am Busy!"
+  }
+};
 
 profileRouter.use(userAuth);
 
@@ -94,7 +100,7 @@ otherRouter.all("/", (req: Req, res: Res) => {
 
 otherRouter.all("/:query", (req: Req, res: Res) => {
   res.reply = "Hello, Your Query?"
-});
+}, [queryPrint, userAuth]);
 
 profileRouter.pre("/other", otherRouter);
 
