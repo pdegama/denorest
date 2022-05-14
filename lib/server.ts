@@ -91,7 +91,7 @@ class Server {
         try {
           for (const h of ele.hand) {
             await h(r, res); // calls route handler
-            if (res.reply !== "") {
+            if (await res.reply !== "") {
               break;
             }
           }
