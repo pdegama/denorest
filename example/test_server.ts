@@ -28,7 +28,12 @@ v1API.all("/user", async (req: any, res: any) => {
 v1API.all("/login", async () => {
 });
 
-mainRoute.get("/", async (req: any, res: any) => {
+
+mainRoute.use((req: Req, res: Res) => {
+  //console.log(`path: ${req.url?.pathname} time: ${Date()}`);
+});
+
+await mainRoute.get("/", async (req: any, res: any) => {
   /* console.log(pathParse(req)); */
   /* user.insertOne({
     username: "parthka",

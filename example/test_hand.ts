@@ -18,6 +18,9 @@ const profile = async (req: Req, res: Res) => {
 v2.all("/", profile);
 
 const profileRouter = new Router();
+const userAuth = (req: Req, res: Res) => [];
+
+profileRouter.use(userAuth);
 
 profileRouter.all("/", async (req: Req, res: Res) => {
   res.reply = "123xyz";
@@ -65,6 +68,33 @@ profileRouter.all("/log", async (req: Req, res: Res) => {
     "Content-Type": "text/html",
   };
 });
+
+const otherRouter = new Router();
+
+otherRouter.use(async (req: Req, res: Res) => {
+  res.headers = {
+    "Content-Type": "text/html"
+  }
+  if(pathParse(req).params.username === "parthka"){
+    console.log("Hello, Parthka");
+  }else{
+    res.reply = "123"
+  }
+});
+
+otherRouter.all("/", (req: Req, res: Res) => {
+  res.headers = {
+    ... res.headers,
+    "author": "parthka"
+  }
+  res.reply = "<h1>Hello, On Query Page!</h1>"
+});
+
+otherRouter.all("/:query", (req: Req, res: Res) => {
+  res.reply = "Hello, Your Query?"
+});
+
+profileRouter.pre("/other", otherRouter);
 
 profileRouter.all("/delete", async (req: Req, res: Res) => {
   res.reply = "[123]";
