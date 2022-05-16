@@ -4,7 +4,7 @@
  *
  */
 
-import { serve, serveTls } from "https://deno.land/std@0.136.0/http/server.ts";
+import { serve, serveTls, Server as Serverh2 } from "https://deno.land/std@0.136.0/http/server.ts";
 import Router from "./router.ts";
 import { Req, Res, Routes } from "./types.ts";
 
@@ -141,6 +141,24 @@ class Server {
       keyFile, // set key file
     });
   };
+
+  public listenH2 = async (port: number, certFile: string, keyFile: string) => {
+    try{
+      const s = new Serverh2({ handler: this.hand });
+      const listener = Deno.listenTls({
+        port: port,
+        hostname: "0.0.0.0",
+        certFile,
+        keyFile,
+        transport: "tcp",
+        // ALPN protocol support not yet stable.
+        alpnProtocols: ["h2", "http/1.1"],
+      });
+      await s.serve(listener);
+    } catch (e){
+      console.log(e);
+    }
+  }
 }
 
 export default Server; // export server
