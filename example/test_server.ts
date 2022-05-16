@@ -122,7 +122,7 @@ app.set(mainRoute);
 
 app.listen(PORT);
 app.listenTls(8002, "./example/cert.pem", "./example/key.pem");
-// app.listenH2(8003, "./example/cert.pem", "./example/key.pem");
+app.listenH2(8003, "./example/cert.pem", "./example/key.pem");
 
 app.set404(async (req: any, res: any) => {
   res.status = 404;
