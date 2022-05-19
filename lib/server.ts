@@ -4,7 +4,7 @@
  *
  */
 
-import { serve, serveTls } from "https://deno.land/std@0.136.0/http/server.ts";
+import { serve, serveTls } from "https://deno.land/std@0.140.0/http/server.ts";
 import Router from "./router.ts";
 import { Req, Res, Routes } from "./types.ts";
 

@@ -9,8 +9,8 @@
 import {
   MultipartFormData,
   MultipartReader,
-} from "https://deno.land/std@0.136.0/mime/mod.ts";
-import { StringReader } from "https://deno.land/std@0.136.0/io/readers.ts";
+} from "https://deno.land/std@0.140.0/mime/mod.ts";
+import { StringReader } from "https://deno.land/std@0.140.0/io/readers.ts";
 import { Req } from "../types.ts";
 
 // application/json parser
