@@ -74,9 +74,7 @@ app.listen(8080);
 
 ## People
 
-The original author of Denorest is [Parthka](https://github.com/elparthka)
-
-The current lead maintainer is [Slect Team](https://github.com/slectgit)
+The original author of Denorest is [Parthka](https://github.com/meparthka)
 
 ## License
 
