@@ -4,6 +4,8 @@
  *
  */
 
+// deno-lint-ignore-file
+
 // Routes data type
 type Routes = {
   path: string;
@@ -14,7 +16,7 @@ type Routes = {
 
 // Response data type
 type Res = {
-  reply: string | Record<string | number, string | number>;
+  reply: string | Record<string | number, string | number> | any;
   headers: Record<string, string>;
   status: number;
 };

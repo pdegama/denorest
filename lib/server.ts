@@ -118,7 +118,7 @@ class Server {
 
     // send client response
     return new Response(
-      typeof res.reply === "object" ? JSON.stringify(res.reply) : res.reply,
+      res.reply,
       {
         status: res.status, // set status code
         headers: { ...this.dHeaders, ...res.headers }, // set default and specific handler headers
