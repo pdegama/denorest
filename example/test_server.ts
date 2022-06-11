@@ -22,14 +22,26 @@ let secRout = new Router();
 let v1API = new Router();
 
 v1API.use((_, res: Res) => {
-  res.reply = "Not Available";
+  //res.reply = "Not Available";
 });
 
 v1API.all("/user", async (req: any, res: any) => {
   res.reply = "hello, world";
 });
 
-v1API.all("/login", async () => {
+v1API.all("/login", async (req: Req, res: Res) => {
+  let file;
+  try {
+    file = await Deno.open("/tmp/62a2d621390f61b77c6a1f1c", { read: true });
+  } catch (e) {
+    console.log(e);
+    return;
+  }
+  const readableStream = file.readable;
+  res.headers = {
+    "Content-Type": "application/pdf",
+  };
+  res.reply = readableStream;
 });
 
 mainRoute.use((req: Req, res: Res) => {
