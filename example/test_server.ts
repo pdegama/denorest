@@ -32,7 +32,7 @@ v1API.all("/user", async (req: any, res: any) => {
 v1API.all("/login", async (req: Req, res: Res) => {
   let file;
   try {
-    file = await Deno.open("/home/parthka/Data/Lang & Zips/rakhi-rakhi_2.tar.gz", { read: true });
+    file = await Deno.open("/home/parthka/Videos/q.mkv", { read: true });
   } catch (e) {
     console.log(e);
     return;
