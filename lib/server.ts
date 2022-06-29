@@ -15,10 +15,10 @@ class Server {
 
   // default 404 status code handler
   private hand404 = (_: Req, res: Res): void => {
-    res.reply = {
+    res.reply = JSON.stringify({
       status: 404,
       massage: "Route Not Found",
-    };
+    });
     res.headers = {
       "Content-Type": "application/json",
     };
@@ -26,10 +26,10 @@ class Server {
 
   // default 500 status code handler
   private hand500 = (_: Req, res: Res): void => {
-    res.reply = {
+    res.reply = JSON.stringify({
       status: 500,
       massage: "Internal Server Error",
-    };
+    });
     res.headers = {
       "Content-Type": "application/json",
     };
