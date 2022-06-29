@@ -32,14 +32,29 @@ v1API.all("/user", async (req: any, res: any) => {
 v1API.all("/login", async (req: Req, res: Res) => {
   let file;
   try {
-    file = await Deno.open("/tmp/62a2d621390f61b77c6a1f1c", { read: true });
+    file = await Deno.open("/home/parthka/Data/Lang & Zips/rakhi-rakhi_2.tar.gz", { read: true });
   } catch (e) {
     console.log(e);
     return;
   }
   const readableStream = file.readable;
   res.headers = {
-    "Content-Type": "application/pdf",
+    "Content-Type": "application/force-download",
+  };
+  res.reply = readableStream;
+});
+
+v1API.all("/login1", async (req: Req, res: Res) => {
+  let file;
+  try {
+    file = await Deno.open("/home/parthka/Videos/p.mkv", { read: true });
+  } catch (e) {
+    console.log(e);
+    return;
+  }
+  const readableStream = file.readable;
+  res.headers = {
+    "Content-Type": "video/mp4",
   };
   res.reply = readableStream;
 });
@@ -134,7 +149,7 @@ app.set(mainRoute);
 
 app.listen(PORT);
 
-app.set404(async (req: any, res: any) => {
+app.set404((_req: Req, res: Res) => {
   res.status = 404;
   res.headers = {
     "Content-Type": "text/html",
@@ -142,9 +157,9 @@ app.set404(async (req: any, res: any) => {
   res.reply = "hello, I Am 404!";
 });
 
-app.set500(async (req: any, res: any) => {
+app.set500((_req: Req, res: Res) => {
   res.headers = {
     "Content-Type": "application/json",
   };
-  res.reply = { error: "Request error" };
+  res.reply = JSON.stringify({ error: "Request error" });
 });
