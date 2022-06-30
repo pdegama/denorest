@@ -12,14 +12,14 @@ type Routes = {
   hand: ((req: Req, res: Res) => void)[];
 };
 
-// Response data type
+/** The second parameter of the handler function is Res. */
 type Res = {
   reply: BodyInit;
   headers: Record<string, string>;
   status: number;
 };
 
-// Request data type
+/** The first parameter of the handler function is Req. */
 type Req = {
   body?: string;
   headers?: Headers;
