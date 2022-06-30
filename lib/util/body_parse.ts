@@ -1,8 +1,4 @@
-/*!
- *
- * request body parser
- *
- */
+// Copyright 2022 Parthka. All rights reserved. MIT license.
 
 // deno-lint-ignore-file
 
@@ -13,7 +9,7 @@ import {
 import { StringReader } from "https://deno.land/std@0.140.0/io/readers.ts";
 import { Req } from "../types.ts";
 
-// application/json parser
+/** Get application/json parser function */
 class GetJSON {
   public field; // body object
   public text; // body text
@@ -42,7 +38,7 @@ class GetJSON {
   };
 }
 
-// application/x-www-form-urlencoded parser
+/** Get application/x-www-form-urlencoded parser function  */
 class GetURL {
   public field: Record<string, string> = {}; // body object
   public text; // body text
@@ -77,7 +73,7 @@ class GetURL {
   };
 }
 
-// other body type parser
+/** Get other body type parser function. */
 class GetOther {
   public field: Record<string, string> = {}; // body object
   public text; // body text
@@ -100,7 +96,7 @@ class GetOther {
   };
 }
 
-// multipart/form-data parser
+/** Get multipart/form-data parser function. */
 const getForm = async (
   req: Req,
   b: string[],
@@ -114,7 +110,7 @@ const getForm = async (
   }
 };
 
-// return parsed data
+/** Parse Request Payload function. */
 export default async (
   req: Req,
 ): Promise<any> => {

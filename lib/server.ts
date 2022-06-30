@@ -1,19 +1,16 @@
-/*!
- *
- * server make and listen
- *
- */
+// Copyright 2022 Parthka. All rights reserved. MIT license.
 
 import { serve, serveTls } from "https://deno.land/std@0.140.0/http/server.ts";
 import Router from "./router.ts";
 import { Req, Res, Routes } from "./types.ts";
 
+/** A class which registers router. */
 class Server {
   public routes: Routes[] = []; // all routes
   private dHeaders: Record<string, string> = {}; // default headers
   private allowME = false; // more Exp var
 
-  // default 404 status code handler
+  /** default 404 status code handler */
   private hand404 = (_: Req, res: Res): void => {
     res.reply = JSON.stringify({
       status: 404,
@@ -23,8 +20,8 @@ class Server {
       "Content-Type": "application/json",
     };
   };
-
-  // default 500 status code handler
+  
+  /** default 500 status code handler */
   private hand500 = (_: Req, res: Res): void => {
     res.reply = JSON.stringify({
       status: 500,
@@ -34,29 +31,29 @@ class Server {
       "Content-Type": "application/json",
     };
   };
-
-  // Set default headers
+  
+  /** Set default headers */
   public headers = (headers: Record<string, string>) => this.dHeaders = headers;
-
-  // set more path Exp
+  
+  /** set more path Exp */
   public allowMoreExp = (allow: boolean) => this.allowME = allow;
 
-  // set routes
+  /** set routes */
   public set = async (r: Router) => {
     this.routes = await r.getRoutes(this.allowME); // set all routes
   };
 
-  // set 404 error handler
+  /** set 404 error handler */
   public set404 = (hand: (req: Req, res: Res) => void) => {
     this.hand404 = hand;
   };
 
-  // set 500 error handler
+  /** set 500 error handler */
   public set500 = (hand: (req: Req, res: Res) => void) => {
     this.hand500 = hand;
   };
 
-  // main handler
+  /** main handler */
   private hand = async (req: Request): Promise<Response> => {
     const url = new URL(req.url);
 
@@ -116,7 +113,7 @@ class Server {
       }
     }
 
-    // send client response
+    // send client response */
     return new Response(
       res.reply,
       {
@@ -126,14 +123,14 @@ class Server {
     );
   };
 
-  // listen server
+  /** listen server */
   public listen = (port: number) => {
     serve(this.hand, {
       port: port, // ser port
     });
   };
 
-  // listen server on TLS
+  /** listen server on TLS */
   public listenTls = (port: number, certFile: string, keyFile: string) => {
     serveTls(this.hand, {
       port: port, // set port

@@ -1,11 +1,6 @@
-/*!
- *
- * route path to RegExp
- * e.g.
- *      /profile/:user_name => /^\/profile\/(?<user_name>[a-zA-Z0-9_ %@]+)\/?$/
- *
- */
+// Copyright 2022 Parthka. All rights reserved. MIT license.
 
+/** Route path to RegExp Function. */
 export default (path: string, moreExp?: boolean): RegExp => {
   let str = path.charAt(0) !== "/" ? "^/" : "^";
 

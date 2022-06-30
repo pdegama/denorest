@@ -1,11 +1,8 @@
-/*!
- *
- * request path parser
- *
- */
+// Copyright 2022 Parthka. All rights reserved. MIT license.
 
 import { Req } from "../types.ts";
 
+/** Get Query And Parameter Function. */
 export default (req: Req): Record<string, Record<string, string>> => {
   if (req.url && req.reg) {
     let dPath;

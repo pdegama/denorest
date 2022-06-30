@@ -1,10 +1,6 @@
-/*!
- *
- * Routes, Request and Response Data Types
- *
- */
+// Copyright 2022 Parthka. All rights reserved. MIT license.
 
-// Routes data type
+/** Routes data type */
 type Routes = {
   path: string;
   reg: RegExp;
