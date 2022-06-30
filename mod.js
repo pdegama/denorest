@@ -102,8 +102,7 @@ class Server {
         return this.#closed;
     }
     get addrs() {
-        return Array.from(this.#listeners).map((listener)=>listener.addr
-        );
+        return Array.from(this.#listeners).map((listener)=>listener.addr);
     }
     async #respond(requestEvent, httpConn, connInfo) {
         let response;
@@ -188,18 +187,31 @@ class Server {
         this.#httpConnections.delete(httpConn4);
     }
 }
+function hostnameForDisplay(hostname) {
+    return hostname === "0.0.0.0" ? "localhost" : hostname;
+}
 async function serve(handler, options = {}) {
+    const port = options.port ?? 8000;
+    const hostname = options.hostname ?? "0.0.0.0";
     const server = new Server({
-        port: options.port ?? 8000,
-        hostname: options.hostname ?? "0.0.0.0",
+        port,
+        hostname,
         handler,
         onError: options.onError
     });
-    options?.signal?.addEventListener("abort", ()=>server.close()
-    , {
+    options?.signal?.addEventListener("abort", ()=>server.close(), {
         once: true
     });
-    return await server.listenAndServe();
+    const s = server.listenAndServe();
+    if ("onListen" in options) {
+        options.onListen?.({
+            port,
+            hostname
+        });
+    } else {
+        console.log(`Listening on http://${hostnameForDisplay(hostname)}:${port}/`);
+    }
+    return await s;
 }
 async function serveTls(handler, options) {
     if (!options.keyFile) {
@@ -208,44 +220,52 @@ async function serveTls(handler, options) {
     if (!options.certFile) {
         throw new Error("TLS config is given, but 'certFile' is missing.");
     }
+    const port = options.port ?? 8443;
+    const hostname = options.hostname ?? "0.0.0.0";
     const server = new Server({
-        port: options.port ?? 8443,
-        hostname: options.hostname ?? "0.0.0.0",
+        port,
+        hostname,
         handler,
         onError: options.onError
     });
-    options?.signal?.addEventListener("abort", ()=>server.close()
-    , {
+    options?.signal?.addEventListener("abort", ()=>server.close(), {
         once: true
     });
-    return await server.listenAndServeTls(options.certFile, options.keyFile);
+    const s = server.listenAndServeTls(options.certFile, options.keyFile);
+    if ("onListen" in options) {
+        options.onListen?.({
+            port,
+            hostname
+        });
+    } else {
+        console.log(`Listening on https://${hostnameForDisplay(hostname)}:${port}/`);
+    }
+    return await s;
 }
 class Server1 {
     routes = [];
     dHeaders = {};
     allowME = false;
     hand404 = (_, res)=>{
-        res.reply = {
+        res.reply = JSON.stringify({
             status: 404,
             massage: "Route Not Found"
-        };
+        });
         res.headers = {
             "Content-Type": "application/json"
         };
     };
     hand500 = (_, res)=>{
-        res.reply = {
+        res.reply = JSON.stringify({
             status: 500,
             massage: "Internal Server Error"
-        };
+        });
         res.headers = {
             "Content-Type": "application/json"
         };
     };
-    headers = (headers)=>this.dHeaders = headers
-    ;
-    allowMoreExp = (allow)=>this.allowME = allow
-    ;
+    headers = (headers)=>this.dHeaders = headers;
+    allowMoreExp = (allow)=>this.allowME = allow;
     set = async (r)=>{
         this.routes = await r.getRoutes(this.allowME);
     };
@@ -302,7 +322,7 @@ class Server1 {
                 await this.hand500(r, res);
             }
         }
-        return new Response(typeof res.reply === "object" ? JSON.stringify(res.reply) : res.reply, {
+        return new Response(res.reply, {
             status: res.status,
             headers: {
                 ...this.dHeaders,
@@ -1218,7 +1238,7 @@ const osType = (()=>{
         return Deno.build.os;
     }
     const { navigator  } = globalThis;
-    if (navigator?.appVersion?.includes?.("Win") ?? false) {
+    if (navigator?.appVersion?.includes?.("Win")) {
         return "windows";
     }
     return "linux";
@@ -2457,8 +2477,7 @@ class PartReader {
         assert(cd != null, "content-disposition must be set");
         const comps = decodeURI(cd).split(";");
         this.contentDisposition = comps[0];
-        comps.slice(1).map((v)=>v.trim()
-        ).map((kv)=>{
+        comps.slice(1).map((v)=>v.trim()).map((kv)=>{
             const [k, v] = kv.split("=");
             if (v) {
                 const s = v.charAt(0);
