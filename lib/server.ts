@@ -20,7 +20,7 @@ class Server {
       "Content-Type": "application/json",
     };
   };
-  
+
   /** default 500 status code handler */
   private hand500 = (_: Req, res: Res): void => {
     res.reply = JSON.stringify({
@@ -31,10 +31,10 @@ class Server {
       "Content-Type": "application/json",
     };
   };
-  
+
   /** Set default headers */
   public headers = (headers: Record<string, string>) => this.dHeaders = headers;
-  
+
   /** set more path Exp */
   public allowMoreExp = (allow: boolean) => this.allowME = allow;
 
@@ -115,7 +115,7 @@ class Server {
 
     // send client response */
     return new Response(
-      res.reply,
+      typeof res.reply !== "object" ? res.reply : JSON.stringify(res.reply),
       {
         status: res.status, // set status code
         headers: { ...this.dHeaders, ...res.headers }, // set default and specific handler headers

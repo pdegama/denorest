@@ -7,14 +7,14 @@ function delay(ms, options = {}) {
     if (signal?.aborted) {
         return Promise.reject(new DOMException("Delay was aborted.", "AbortError"));
     }
-    return new Promise((resolve3, reject)=>{
+    return new Promise((resolve, reject)=>{
         const abort = ()=>{
             clearTimeout(i);
             reject(new DOMException("Delay was aborted.", "AbortError"));
         };
         const done = ()=>{
             signal?.removeEventListener("abort", abort);
-            resolve3();
+            resolve();
         };
         const i = setTimeout(done, ms);
         signal?.addEventListener("abort", abort, {
@@ -119,16 +119,16 @@ class Server {
     }
     async #serveHttp(httpConn1, connInfo1) {
         while(!this.#closed){
-            let requestEvent;
+            let requestEvent1;
             try {
-                requestEvent = await httpConn1.nextRequest();
+                requestEvent1 = await httpConn1.nextRequest();
             } catch  {
                 break;
             }
-            if (requestEvent === null) {
+            if (requestEvent1 === null) {
                 break;
             }
-            this.#respond(requestEvent, httpConn1, connInfo1);
+            this.#respond(requestEvent1, httpConn1, connInfo1);
         }
         this.#closeHttpConn(httpConn1);
     }
@@ -138,8 +138,8 @@ class Server {
             let conn;
             try {
                 conn = await listener.accept();
-            } catch (error) {
-                if (error instanceof Deno.errors.BadResource || error instanceof Deno.errors.InvalidData || error instanceof Deno.errors.UnexpectedEof || error instanceof Deno.errors.ConnectionReset || error instanceof Deno.errors.NotConnected) {
+            } catch (error1) {
+                if (error1 instanceof Deno.errors.BadResource || error1 instanceof Deno.errors.InvalidData || error1 instanceof Deno.errors.UnexpectedEof || error1 instanceof Deno.errors.ConnectionReset || error1 instanceof Deno.errors.NotConnected) {
                     if (!acceptBackoffDelay) {
                         acceptBackoffDelay = INITIAL_ACCEPT_BACKOFF_DELAY;
                     } else {
@@ -151,27 +151,27 @@ class Server {
                     await delay(acceptBackoffDelay);
                     continue;
                 }
-                throw error;
+                throw error1;
             }
             acceptBackoffDelay = undefined;
-            let httpConn;
+            let httpConn2;
             try {
-                httpConn = Deno.serveHttp(conn);
+                httpConn2 = Deno.serveHttp(conn);
             } catch  {
                 continue;
             }
-            this.#trackHttpConnection(httpConn);
-            const connInfo = {
+            this.#trackHttpConnection(httpConn2);
+            const connInfo2 = {
                 localAddr: conn.localAddr,
                 remoteAddr: conn.remoteAddr
             };
-            this.#serveHttp(httpConn, connInfo);
+            this.#serveHttp(httpConn2, connInfo2);
         }
     }
-     #closeHttpConn(httpConn2) {
-        this.#untrackHttpConnection(httpConn2);
+     #closeHttpConn(httpConn3) {
+        this.#untrackHttpConnection(httpConn3);
         try {
-            httpConn2.close();
+            httpConn3.close();
         } catch  {}
     }
      #trackListener(listener1) {
@@ -180,11 +180,11 @@ class Server {
      #untrackListener(listener2) {
         this.#listeners.delete(listener2);
     }
-     #trackHttpConnection(httpConn3) {
-        this.#httpConnections.add(httpConn3);
+     #trackHttpConnection(httpConn4) {
+        this.#httpConnections.add(httpConn4);
     }
-     #untrackHttpConnection(httpConn4) {
-        this.#httpConnections.delete(httpConn4);
+     #untrackHttpConnection(httpConn5) {
+        this.#httpConnections.delete(httpConn5);
     }
 }
 function hostnameForDisplay(hostname) {
@@ -318,11 +318,11 @@ class Server1 {
             r.url = url;
             try {
                 await this.hand404(r, res);
-            } catch (_e) {
+            } catch (_e1) {
                 await this.hand500(r, res);
             }
         }
-        return new Response(res.reply, {
+        return new Response(typeof res.reply !== "object" ? res.reply : JSON.stringify(res.reply), {
             status: res.status,
             headers: {
                 ...this.dHeaders,
@@ -343,27 +343,27 @@ class Server1 {
         });
     };
 }
-const __default = (path2, moreExp)=>{
-    let str1 = path2.charAt(0) !== "/" ? "^/" : "^";
-    for(let i = 0; i < path2.length; i++){
-        const c = path2.charAt(i);
+const __default = (path, moreExp)=>{
+    let str = path.charAt(0) !== "/" ? "^/" : "^";
+    for(let i = 0; i < path.length; i++){
+        const c = path.charAt(i);
         if (c === ":") {
             let j, param = "";
-            for(j = i + 1; j < path2.length; j++){
-                if (/\w/.test(path2.charAt(j))) {
-                    param += path2.charAt(j);
+            for(j = i + 1; j < path.length; j++){
+                if (/\w/.test(path.charAt(j))) {
+                    param += path.charAt(j);
                 } else {
                     break;
                 }
             }
-            str1 += !moreExp ? `(?<${param}>[a-zA-Z0-9_ %@]+)` : `(?<${param}>[a-zA-Z0-9 !@#\$%\\^\&*\)\(+=._;:]+)`;
+            str += !moreExp ? `(?<${param}>[a-zA-Z0-9_ %@]+)` : `(?<${param}>[a-zA-Z0-9 !@#\$%\\^\&*\)\(+=._;:]+)`;
             i = j - 1;
         } else {
-            str1 += c;
+            str += c;
         }
     }
-    str1 += "/?$";
-    return new RegExp(str1);
+    str += "/?$";
+    return new RegExp(str);
 };
 class Router {
     routes = [];
@@ -371,9 +371,9 @@ class Router {
     use = async (hand)=>{
         await this.hook.push(hand);
     };
-    all = (path3, hand, hook = [])=>{
+    all = (path, hand, hook = [])=>{
         const e = {
-            path: path3,
+            path,
             reg: / /,
             method: "ALL",
             hand: [
@@ -384,9 +384,9 @@ class Router {
         };
         this.routes.push(e);
     };
-    get = (path4, hand, hook = [])=>{
+    get = (path, hand, hook = [])=>{
         const e = {
-            path: path4,
+            path,
             reg: / /,
             method: "GET",
             hand: [
@@ -397,9 +397,9 @@ class Router {
         };
         this.routes.push(e);
     };
-    post = (path5, hand, hook = [])=>{
+    post = (path, hand, hook = [])=>{
         const e = {
-            path: path5,
+            path,
             reg: / /,
             method: "POST",
             hand: [
@@ -410,9 +410,9 @@ class Router {
         };
         this.routes.push(e);
     };
-    put = (path6, hand, hook = [])=>{
+    put = (path, hand, hook = [])=>{
         const e = {
-            path: path6,
+            path,
             reg: / /,
             method: "PUT",
             hand: [
@@ -423,9 +423,9 @@ class Router {
         };
         this.routes.push(e);
     };
-    delete = (path7, hand, hook = [])=>{
+    delete = (path, hand, hook = [])=>{
         const e = {
-            path: path7,
+            path,
             reg: / /,
             method: "DELETE",
             hand: [
@@ -436,9 +436,9 @@ class Router {
         };
         this.routes.push(e);
     };
-    options = (path8, hand, hook = [])=>{
+    options = (path, hand, hook = [])=>{
         const e = {
-            path: path8,
+            path,
             reg: / /,
             method: "OPTIONS",
             hand: [
@@ -449,9 +449,9 @@ class Router {
         };
         this.routes.push(e);
     };
-    head = (path9, hand, hook = [])=>{
+    head = (path, hand, hook = [])=>{
         const e = {
-            path: path9,
+            path,
             reg: / /,
             method: "HEAD",
             hand: [
@@ -462,9 +462,9 @@ class Router {
         };
         this.routes.push(e);
     };
-    patch = (path10, hand, hook = [])=>{
+    patch = (path, hand, hook = [])=>{
         const e = {
-            path: path10,
+            path,
             reg: / /,
             method: "PATCH",
             hand: [
@@ -481,10 +481,10 @@ class Router {
         }
         return this.routes;
     };
-    pre = (path11, r)=>{
+    pre = (path, r)=>{
         for (const rp of r.routes){
             const e = {
-                path: path11 + (rp.path !== "/" ? rp.path : ""),
+                path: path + (rp.path !== "/" ? rp.path : ""),
                 reg: rp.reg,
                 method: rp.method,
                 hand: [
@@ -682,67 +682,67 @@ class Buffer {
         return copy(p, this.#buf, m);
     }
     write(p) {
-        const n1 = this.writeSync(p);
-        return Promise.resolve(n1);
+        const n = this.writeSync(p);
+        return Promise.resolve(n);
     }
-     #grow(n2) {
+     #grow(n1) {
         const m = this.length;
         if (m === 0 && this.#off !== 0) {
             this.reset();
         }
-        const i = this.#tryGrowByReslice(n2);
+        const i = this.#tryGrowByReslice(n1);
         if (i >= 0) {
             return i;
         }
         const c = this.capacity;
-        if (n2 <= Math.floor(c / 2) - m) {
+        if (n1 <= Math.floor(c / 2) - m) {
             copy(this.#buf.subarray(this.#off), this.#buf);
-        } else if (c + n2 > MAX_SIZE) {
+        } else if (c + n1 > MAX_SIZE) {
             throw new Error("The buffer cannot be grown beyond the maximum size.");
         } else {
-            const buf = new Uint8Array(Math.min(2 * c + n2, MAX_SIZE));
+            const buf = new Uint8Array(Math.min(2 * c + n1, MAX_SIZE));
             copy(this.#buf.subarray(this.#off), buf);
             this.#buf = buf;
         }
         this.#off = 0;
-        this.#reslice(Math.min(m + n2, MAX_SIZE));
+        this.#reslice(Math.min(m + n1, MAX_SIZE));
         return m;
     }
-    grow(n3) {
-        if (n3 < 0) {
+    grow(n) {
+        if (n < 0) {
             throw Error("Buffer.grow: negative count");
         }
-        const m = this.#grow(n3);
+        const m = this.#grow(n);
         this.#reslice(m);
     }
     async readFrom(r) {
-        let n4 = 0;
+        let n = 0;
         const tmp = new Uint8Array(MIN_READ);
         while(true){
             const shouldGrow = this.capacity - this.length < MIN_READ;
             const buf = shouldGrow ? tmp : new Uint8Array(this.#buf.buffer, this.length);
             const nread = await r.read(buf);
             if (nread === null) {
-                return n4;
+                return n;
             }
             if (shouldGrow) this.writeSync(buf.subarray(0, nread));
             else this.#reslice(this.length + nread);
-            n4 += nread;
+            n += nread;
         }
     }
     readFromSync(r) {
-        let n5 = 0;
+        let n = 0;
         const tmp = new Uint8Array(MIN_READ);
         while(true){
             const shouldGrow = this.capacity - this.length < MIN_READ;
             const buf = shouldGrow ? tmp : new Uint8Array(this.#buf.buffer, this.length);
             const nread = r.readSync(buf);
             if (nread === null) {
-                return n5;
+                return n;
             }
             if (shouldGrow) this.writeSync(buf.subarray(0, nread));
             else this.#reslice(this.length + nread);
-            n5 += nread;
+            n += nread;
         }
     }
 }
@@ -822,10 +822,10 @@ class BufReader {
         if (p.byteLength === 0) return rr;
         if (this.#r === this.#w) {
             if (p.byteLength >= this.#buf.byteLength) {
-                const rr = await this.#rd.read(p);
-                const nread = rr ?? 0;
+                const rr1 = await this.#rd.read(p);
+                const nread = rr1 ?? 0;
                 assert(nread >= 0, "negative read");
-                return rr;
+                return rr1;
             }
             this.#r = 0;
             this.#w = 0;
@@ -979,12 +979,12 @@ class BufReader {
         }
         return slice;
     }
-    async peek(n6) {
-        if (n6 < 0) {
+    async peek(n) {
+        if (n < 0) {
             throw Error("negative count");
         }
         let avail = this.#w - this.#r;
-        while(avail < n6 && avail < this.#buf.byteLength && !this.#eof){
+        while(avail < n && avail < this.#buf.byteLength && !this.#eof){
             try {
                 await this.#fill();
             } catch (err) {
@@ -1004,12 +1004,12 @@ class BufReader {
         }
         if (avail === 0 && this.#eof) {
             return null;
-        } else if (avail < n6 && this.#eof) {
+        } else if (avail < n && this.#eof) {
             return this.#buf.subarray(this.#r, this.#r + avail);
-        } else if (avail < n6) {
+        } else if (avail < n) {
             throw new BufferFullError(this.#buf.subarray(this.#r, this.#w));
         }
-        return this.#buf.subarray(this.#r, this.#r + n6);
+        return this.#buf.subarray(this.#r, this.#r + n);
     }
 }
 class AbstractBufBase {
@@ -1153,7 +1153,7 @@ class BufWriterSync extends AbstractBufBase {
 }
 const DEFAULT_BUFFER_SIZE = 32 * 1024;
 async function copy1(src, dst, options) {
-    let n7 = 0;
+    let n = 0;
     const bufSize = options?.bufSize ?? DEFAULT_BUFFER_SIZE;
     const b = new Uint8Array(bufSize);
     let gotEOF = false;
@@ -1166,10 +1166,10 @@ async function copy1(src, dst, options) {
             while(nwritten < result){
                 nwritten += await dst.write(b.subarray(nwritten, result));
             }
-            n7 += nwritten;
+            n += nwritten;
         }
     }
-    return n7;
+    return n;
 }
 const { Deno: Deno1  } = globalThis;
 typeof Deno1?.noColor === "boolean" ? Deno1.noColor : true;
@@ -1178,10 +1178,10 @@ new RegExp([
     "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))", 
 ].join("|"), "g");
 var DiffType;
-(function(DiffType1) {
-    DiffType1["removed"] = "removed";
-    DiffType1["common"] = "common";
-    DiffType1["added"] = "added";
+(function(DiffType) {
+    DiffType["removed"] = "removed";
+    DiffType["common"] = "common";
+    DiffType["added"] = "added";
 })(DiffType || (DiffType = {}));
 const DEFAULT_BUFFER_SIZE1 = 32 * 1024;
 async function copyN(r, dest, size) {
@@ -1195,11 +1195,11 @@ async function copyN(r, dest, size) {
         const nread = result ?? 0;
         bytesRead += nread;
         if (nread > 0) {
-            let n8 = 0;
-            while(n8 < nread){
-                n8 += await dest.write(buf.slice(n8, nread));
+            let n = 0;
+            while(n < nread){
+                n += await dest.write(buf.slice(n, nread));
             }
-            assert(n8 === nread, "could not write");
+            assert(n === nread, "could not write");
         }
         if (result === null) {
             break;
@@ -1233,9 +1233,9 @@ class MultiReader {
     }
 }
 const osType = (()=>{
-    const { Deno  } = globalThis;
-    if (typeof Deno?.build?.os === "string") {
-        return Deno.build.os;
+    const { Deno: Deno1  } = globalThis;
+    if (typeof Deno1?.build?.os === "string") {
+        return Deno1.build.os;
     }
     const { navigator  } = globalThis;
     if (navigator?.appVersion?.includes?.("Win")) {
@@ -1245,9 +1245,9 @@ const osType = (()=>{
 })();
 const isWindows = osType === "windows";
 const CHAR_FORWARD_SLASH = 47;
-function assertPath(path12) {
-    if (typeof path12 !== "string") {
-        throw new TypeError(`Path must be a string. Received ${JSON.stringify(path12)}`);
+function assertPath(path) {
+    if (typeof path !== "string") {
+        throw new TypeError(`Path must be a string. Received ${JSON.stringify(path)}`);
     }
 }
 function isPosixPathSeparator(code) {
@@ -1259,17 +1259,17 @@ function isPathSeparator(code) {
 function isWindowsDeviceRoot(code) {
     return code >= 97 && code <= 122 || code >= 65 && code <= 90;
 }
-function normalizeString(path13, allowAboveRoot, separator, isPathSeparator1) {
+function normalizeString(path, allowAboveRoot, separator, isPathSeparator) {
     let res = "";
     let lastSegmentLength = 0;
     let lastSlash = -1;
     let dots = 0;
     let code;
-    for(let i = 0, len1 = path13.length; i <= len1; ++i){
-        if (i < len1) code = path13.charCodeAt(i);
-        else if (isPathSeparator1(code)) break;
+    for(let i = 0, len = path.length; i <= len; ++i){
+        if (i < len) code = path.charCodeAt(i);
+        else if (isPathSeparator(code)) break;
         else code = CHAR_FORWARD_SLASH;
-        if (isPathSeparator1(code)) {
+        if (isPathSeparator(code)) {
             if (lastSlash === i - 1 || dots === 1) {} else if (lastSlash !== i - 1 && dots === 2) {
                 if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== 46 || res.charCodeAt(res.length - 2) !== 46) {
                     if (res.length > 2) {
@@ -1298,8 +1298,8 @@ function normalizeString(path13, allowAboveRoot, separator, isPathSeparator1) {
                     lastSegmentLength = 2;
                 }
             } else {
-                if (res.length > 0) res += separator + path13.slice(lastSlash + 1, i);
-                else res = path13.slice(lastSlash + 1, i);
+                if (res.length > 0) res += separator + path.slice(lastSlash + 1, i);
+                else res = path.slice(lastSlash + 1, i);
                 lastSegmentLength = i - lastSlash - 1;
             }
             lastSlash = i;
@@ -1312,12 +1312,12 @@ function normalizeString(path13, allowAboveRoot, separator, isPathSeparator1) {
     }
     return res;
 }
-function _format(sep3, pathObject) {
+function _format(sep, pathObject) {
     const dir = pathObject.dir || pathObject.root;
     const base = pathObject.base || (pathObject.name || "") + (pathObject.ext || "");
     if (!dir) return base;
     if (dir === pathObject.root) return dir + base;
-    return dir + sep3 + base;
+    return dir + sep + base;
 }
 const WHITESPACE_ENCODINGS = {
     "\u0009": "%09",
@@ -1339,56 +1339,56 @@ function resolve(...pathSegments) {
     let resolvedTail = "";
     let resolvedAbsolute = false;
     for(let i = pathSegments.length - 1; i >= -1; i--){
-        let path14;
-        const { Deno  } = globalThis;
+        let path;
+        const { Deno: Deno1  } = globalThis;
         if (i >= 0) {
-            path14 = pathSegments[i];
+            path = pathSegments[i];
         } else if (!resolvedDevice) {
-            if (typeof Deno?.cwd !== "function") {
+            if (typeof Deno1?.cwd !== "function") {
                 throw new TypeError("Resolved a drive-letter-less path without a CWD.");
             }
-            path14 = Deno.cwd();
+            path = Deno1.cwd();
         } else {
-            if (typeof Deno?.env?.get !== "function" || typeof Deno?.cwd !== "function") {
+            if (typeof Deno1?.env?.get !== "function" || typeof Deno1?.cwd !== "function") {
                 throw new TypeError("Resolved a relative path without a CWD.");
             }
-            path14 = Deno.cwd();
-            if (path14 === undefined || path14.slice(0, 3).toLowerCase() !== `${resolvedDevice.toLowerCase()}\\`) {
-                path14 = `${resolvedDevice}\\`;
+            path = Deno1.cwd();
+            if (path === undefined || path.slice(0, 3).toLowerCase() !== `${resolvedDevice.toLowerCase()}\\`) {
+                path = `${resolvedDevice}\\`;
             }
         }
-        assertPath(path14);
-        const len2 = path14.length;
-        if (len2 === 0) continue;
+        assertPath(path);
+        const len = path.length;
+        if (len === 0) continue;
         let rootEnd = 0;
         let device = "";
-        let isAbsolute1 = false;
-        const code = path14.charCodeAt(0);
-        if (len2 > 1) {
+        let isAbsolute = false;
+        const code = path.charCodeAt(0);
+        if (len > 1) {
             if (isPathSeparator(code)) {
-                isAbsolute1 = true;
-                if (isPathSeparator(path14.charCodeAt(1))) {
+                isAbsolute = true;
+                if (isPathSeparator(path.charCodeAt(1))) {
                     let j = 2;
                     let last = j;
-                    for(; j < len2; ++j){
-                        if (isPathSeparator(path14.charCodeAt(j))) break;
+                    for(; j < len; ++j){
+                        if (isPathSeparator(path.charCodeAt(j))) break;
                     }
-                    if (j < len2 && j !== last) {
-                        const firstPart = path14.slice(last, j);
+                    if (j < len && j !== last) {
+                        const firstPart = path.slice(last, j);
                         last = j;
-                        for(; j < len2; ++j){
-                            if (!isPathSeparator(path14.charCodeAt(j))) break;
+                        for(; j < len; ++j){
+                            if (!isPathSeparator(path.charCodeAt(j))) break;
                         }
-                        if (j < len2 && j !== last) {
+                        if (j < len && j !== last) {
                             last = j;
-                            for(; j < len2; ++j){
-                                if (isPathSeparator(path14.charCodeAt(j))) break;
+                            for(; j < len; ++j){
+                                if (isPathSeparator(path.charCodeAt(j))) break;
                             }
-                            if (j === len2) {
-                                device = `\\\\${firstPart}\\${path14.slice(last)}`;
+                            if (j === len) {
+                                device = `\\\\${firstPart}\\${path.slice(last)}`;
                                 rootEnd = j;
                             } else if (j !== last) {
-                                device = `\\\\${firstPart}\\${path14.slice(last, j)}`;
+                                device = `\\\\${firstPart}\\${path.slice(last, j)}`;
                                 rootEnd = j;
                             }
                         }
@@ -1397,12 +1397,12 @@ function resolve(...pathSegments) {
                     rootEnd = 1;
                 }
             } else if (isWindowsDeviceRoot(code)) {
-                if (path14.charCodeAt(1) === 58) {
-                    device = path14.slice(0, 2);
+                if (path.charCodeAt(1) === 58) {
+                    device = path.slice(0, 2);
                     rootEnd = 2;
-                    if (len2 > 2) {
-                        if (isPathSeparator(path14.charCodeAt(2))) {
-                            isAbsolute1 = true;
+                    if (len > 2) {
+                        if (isPathSeparator(path.charCodeAt(2))) {
+                            isAbsolute = true;
                             rootEnd = 3;
                         }
                     }
@@ -1410,7 +1410,7 @@ function resolve(...pathSegments) {
             }
         } else if (isPathSeparator(code)) {
             rootEnd = 1;
-            isAbsolute1 = true;
+            isAbsolute = true;
         }
         if (device.length > 0 && resolvedDevice.length > 0 && device.toLowerCase() !== resolvedDevice.toLowerCase()) {
             continue;
@@ -1419,46 +1419,46 @@ function resolve(...pathSegments) {
             resolvedDevice = device;
         }
         if (!resolvedAbsolute) {
-            resolvedTail = `${path14.slice(rootEnd)}\\${resolvedTail}`;
-            resolvedAbsolute = isAbsolute1;
+            resolvedTail = `${path.slice(rootEnd)}\\${resolvedTail}`;
+            resolvedAbsolute = isAbsolute;
         }
         if (resolvedAbsolute && resolvedDevice.length > 0) break;
     }
     resolvedTail = normalizeString(resolvedTail, !resolvedAbsolute, "\\", isPathSeparator);
     return resolvedDevice + (resolvedAbsolute ? "\\" : "") + resolvedTail || ".";
 }
-function normalize(path15) {
-    assertPath(path15);
-    const len3 = path15.length;
-    if (len3 === 0) return ".";
+function normalize(path) {
+    assertPath(path);
+    const len = path.length;
+    if (len === 0) return ".";
     let rootEnd = 0;
     let device;
-    let isAbsolute2 = false;
-    const code = path15.charCodeAt(0);
-    if (len3 > 1) {
+    let isAbsolute = false;
+    const code = path.charCodeAt(0);
+    if (len > 1) {
         if (isPathSeparator(code)) {
-            isAbsolute2 = true;
-            if (isPathSeparator(path15.charCodeAt(1))) {
+            isAbsolute = true;
+            if (isPathSeparator(path.charCodeAt(1))) {
                 let j = 2;
                 let last = j;
-                for(; j < len3; ++j){
-                    if (isPathSeparator(path15.charCodeAt(j))) break;
+                for(; j < len; ++j){
+                    if (isPathSeparator(path.charCodeAt(j))) break;
                 }
-                if (j < len3 && j !== last) {
-                    const firstPart = path15.slice(last, j);
+                if (j < len && j !== last) {
+                    const firstPart = path.slice(last, j);
                     last = j;
-                    for(; j < len3; ++j){
-                        if (!isPathSeparator(path15.charCodeAt(j))) break;
+                    for(; j < len; ++j){
+                        if (!isPathSeparator(path.charCodeAt(j))) break;
                     }
-                    if (j < len3 && j !== last) {
+                    if (j < len && j !== last) {
                         last = j;
-                        for(; j < len3; ++j){
-                            if (isPathSeparator(path15.charCodeAt(j))) break;
+                        for(; j < len; ++j){
+                            if (isPathSeparator(path.charCodeAt(j))) break;
                         }
-                        if (j === len3) {
-                            return `\\\\${firstPart}\\${path15.slice(last)}\\`;
+                        if (j === len) {
+                            return `\\\\${firstPart}\\${path.slice(last)}\\`;
                         } else if (j !== last) {
-                            device = `\\\\${firstPart}\\${path15.slice(last, j)}`;
+                            device = `\\\\${firstPart}\\${path.slice(last, j)}`;
                             rootEnd = j;
                         }
                     }
@@ -1467,12 +1467,12 @@ function normalize(path15) {
                 rootEnd = 1;
             }
         } else if (isWindowsDeviceRoot(code)) {
-            if (path15.charCodeAt(1) === 58) {
-                device = path15.slice(0, 2);
+            if (path.charCodeAt(1) === 58) {
+                device = path.slice(0, 2);
                 rootEnd = 2;
-                if (len3 > 2) {
-                    if (isPathSeparator(path15.charCodeAt(2))) {
-                        isAbsolute2 = true;
+                if (len > 2) {
+                    if (isPathSeparator(path.charCodeAt(2))) {
+                        isAbsolute = true;
                         rootEnd = 3;
                     }
                 }
@@ -1482,17 +1482,17 @@ function normalize(path15) {
         return "\\";
     }
     let tail;
-    if (rootEnd < len3) {
-        tail = normalizeString(path15.slice(rootEnd), !isAbsolute2, "\\", isPathSeparator);
+    if (rootEnd < len) {
+        tail = normalizeString(path.slice(rootEnd), !isAbsolute, "\\", isPathSeparator);
     } else {
         tail = "";
     }
-    if (tail.length === 0 && !isAbsolute2) tail = ".";
-    if (tail.length > 0 && isPathSeparator(path15.charCodeAt(len3 - 1))) {
+    if (tail.length === 0 && !isAbsolute) tail = ".";
+    if (tail.length > 0 && isPathSeparator(path.charCodeAt(len - 1))) {
         tail += "\\";
     }
     if (device === undefined) {
-        if (isAbsolute2) {
+        if (isAbsolute) {
             if (tail.length > 0) return `\\${tail}`;
             else return "\\";
         } else if (tail.length > 0) {
@@ -1500,7 +1500,7 @@ function normalize(path15) {
         } else {
             return "";
         }
-    } else if (isAbsolute2) {
+    } else if (isAbsolute) {
         if (tail.length > 0) return `${device}\\${tail}`;
         else return `${device}\\`;
     } else if (tail.length > 0) {
@@ -1509,16 +1509,16 @@ function normalize(path15) {
         return device;
     }
 }
-function isAbsolute(path16) {
-    assertPath(path16);
-    const len4 = path16.length;
-    if (len4 === 0) return false;
-    const code = path16.charCodeAt(0);
+function isAbsolute(path) {
+    assertPath(path);
+    const len = path.length;
+    if (len === 0) return false;
+    const code = path.charCodeAt(0);
     if (isPathSeparator(code)) {
         return true;
     } else if (isWindowsDeviceRoot(code)) {
-        if (len4 > 2 && path16.charCodeAt(1) === 58) {
-            if (isPathSeparator(path16.charCodeAt(2))) return true;
+        if (len > 2 && path.charCodeAt(1) === 58) {
+            if (isPathSeparator(path.charCodeAt(2))) return true;
         }
     }
     return false;
@@ -1529,11 +1529,11 @@ function join(...paths) {
     let joined;
     let firstPart = null;
     for(let i = 0; i < pathsCount; ++i){
-        const path17 = paths[i];
-        assertPath(path17);
-        if (path17.length > 0) {
-            if (joined === undefined) joined = firstPart = path17;
-            else joined += `\\${path17}`;
+        const path = paths[i];
+        assertPath(path);
+        if (path.length > 0) {
+            if (joined === undefined) joined = firstPart = path;
+            else joined += `\\${path}`;
         }
     }
     if (joined === undefined) return ".";
@@ -1636,10 +1636,10 @@ function relative(from, to) {
         return toOrig.slice(toStart, toEnd);
     }
 }
-function toNamespacedPath(path18) {
-    if (typeof path18 !== "string") return path18;
-    if (path18.length === 0) return "";
-    const resolvedPath = resolve(path18);
+function toNamespacedPath(path) {
+    if (typeof path !== "string") return path;
+    if (path.length === 0) return "";
+    const resolvedPath = resolve(path);
     if (resolvedPath.length >= 3) {
         if (resolvedPath.charCodeAt(0) === 92) {
             if (resolvedPath.charCodeAt(1) === 92) {
@@ -1654,38 +1654,38 @@ function toNamespacedPath(path18) {
             }
         }
     }
-    return path18;
+    return path;
 }
-function dirname(path19) {
-    assertPath(path19);
-    const len5 = path19.length;
-    if (len5 === 0) return ".";
+function dirname(path) {
+    assertPath(path);
+    const len = path.length;
+    if (len === 0) return ".";
     let rootEnd = -1;
     let end = -1;
     let matchedSlash = true;
     let offset = 0;
-    const code = path19.charCodeAt(0);
-    if (len5 > 1) {
+    const code = path.charCodeAt(0);
+    if (len > 1) {
         if (isPathSeparator(code)) {
             rootEnd = offset = 1;
-            if (isPathSeparator(path19.charCodeAt(1))) {
+            if (isPathSeparator(path.charCodeAt(1))) {
                 let j = 2;
                 let last = j;
-                for(; j < len5; ++j){
-                    if (isPathSeparator(path19.charCodeAt(j))) break;
+                for(; j < len; ++j){
+                    if (isPathSeparator(path.charCodeAt(j))) break;
                 }
-                if (j < len5 && j !== last) {
+                if (j < len && j !== last) {
                     last = j;
-                    for(; j < len5; ++j){
-                        if (!isPathSeparator(path19.charCodeAt(j))) break;
+                    for(; j < len; ++j){
+                        if (!isPathSeparator(path.charCodeAt(j))) break;
                     }
-                    if (j < len5 && j !== last) {
+                    if (j < len && j !== last) {
                         last = j;
-                        for(; j < len5; ++j){
-                            if (isPathSeparator(path19.charCodeAt(j))) break;
+                        for(; j < len; ++j){
+                            if (isPathSeparator(path.charCodeAt(j))) break;
                         }
-                        if (j === len5) {
-                            return path19;
+                        if (j === len) {
+                            return path;
                         }
                         if (j !== last) {
                             rootEnd = offset = j + 1;
@@ -1694,18 +1694,18 @@ function dirname(path19) {
                 }
             }
         } else if (isWindowsDeviceRoot(code)) {
-            if (path19.charCodeAt(1) === 58) {
+            if (path.charCodeAt(1) === 58) {
                 rootEnd = offset = 2;
-                if (len5 > 2) {
-                    if (isPathSeparator(path19.charCodeAt(2))) rootEnd = offset = 3;
+                if (len > 2) {
+                    if (isPathSeparator(path.charCodeAt(2))) rootEnd = offset = 3;
                 }
             }
         }
     } else if (isPathSeparator(code)) {
-        return path19;
+        return path;
     }
-    for(let i = len5 - 1; i >= offset; --i){
-        if (isPathSeparator(path19.charCodeAt(i))) {
+    for(let i = len - 1; i >= offset; --i){
+        if (isPathSeparator(path.charCodeAt(i))) {
             if (!matchedSlash) {
                 end = i;
                 break;
@@ -1718,29 +1718,29 @@ function dirname(path19) {
         if (rootEnd === -1) return ".";
         else end = rootEnd;
     }
-    return path19.slice(0, end);
+    return path.slice(0, end);
 }
-function basename(path20, ext = "") {
+function basename(path, ext = "") {
     if (ext !== undefined && typeof ext !== "string") {
         throw new TypeError('"ext" argument must be a string');
     }
-    assertPath(path20);
+    assertPath(path);
     let start = 0;
     let end = -1;
     let matchedSlash = true;
     let i;
-    if (path20.length >= 2) {
-        const drive = path20.charCodeAt(0);
+    if (path.length >= 2) {
+        const drive = path.charCodeAt(0);
         if (isWindowsDeviceRoot(drive)) {
-            if (path20.charCodeAt(1) === 58) start = 2;
+            if (path.charCodeAt(1) === 58) start = 2;
         }
     }
-    if (ext !== undefined && ext.length > 0 && ext.length <= path20.length) {
-        if (ext.length === path20.length && ext === path20) return "";
+    if (ext !== undefined && ext.length > 0 && ext.length <= path.length) {
+        if (ext.length === path.length && ext === path) return "";
         let extIdx = ext.length - 1;
         let firstNonSlashEnd = -1;
-        for(i = path20.length - 1; i >= start; --i){
-            const code = path20.charCodeAt(i);
+        for(i = path.length - 1; i >= start; --i){
+            const code = path.charCodeAt(i);
             if (isPathSeparator(code)) {
                 if (!matchedSlash) {
                     start = i + 1;
@@ -1764,11 +1764,11 @@ function basename(path20, ext = "") {
             }
         }
         if (start === end) end = firstNonSlashEnd;
-        else if (end === -1) end = path20.length;
-        return path20.slice(start, end);
+        else if (end === -1) end = path.length;
+        return path.slice(start, end);
     } else {
-        for(i = path20.length - 1; i >= start; --i){
-            if (isPathSeparator(path20.charCodeAt(i))) {
+        for(i = path.length - 1; i >= start; --i){
+            if (isPathSeparator(path.charCodeAt(i))) {
                 if (!matchedSlash) {
                     start = i + 1;
                     break;
@@ -1779,22 +1779,22 @@ function basename(path20, ext = "") {
             }
         }
         if (end === -1) return "";
-        return path20.slice(start, end);
+        return path.slice(start, end);
     }
 }
-function extname(path21) {
-    assertPath(path21);
+function extname(path) {
+    assertPath(path);
     let start = 0;
     let startDot = -1;
     let startPart = 0;
     let end = -1;
     let matchedSlash = true;
     let preDotState = 0;
-    if (path21.length >= 2 && path21.charCodeAt(1) === 58 && isWindowsDeviceRoot(path21.charCodeAt(0))) {
+    if (path.length >= 2 && path.charCodeAt(1) === 58 && isWindowsDeviceRoot(path.charCodeAt(0))) {
         start = startPart = 2;
     }
-    for(let i = path21.length - 1; i >= start; --i){
-        const code = path21.charCodeAt(i);
+    for(let i = path.length - 1; i >= start; --i){
+        const code = path.charCodeAt(i);
         if (isPathSeparator(code)) {
             if (!matchedSlash) {
                 startPart = i + 1;
@@ -1816,7 +1816,7 @@ function extname(path21) {
     if (startDot === -1 || end === -1 || preDotState === 0 || preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
         return "";
     }
-    return path21.slice(startDot, end);
+    return path.slice(startDot, end);
 }
 function format(pathObject) {
     if (pathObject === null || typeof pathObject !== "object") {
@@ -1824,8 +1824,8 @@ function format(pathObject) {
     }
     return _format("\\", pathObject);
 }
-function parse(path22) {
-    assertPath(path22);
+function parse(path) {
+    assertPath(path);
     const ret = {
         root: "",
         dir: "",
@@ -1833,30 +1833,30 @@ function parse(path22) {
         ext: "",
         name: ""
     };
-    const len6 = path22.length;
-    if (len6 === 0) return ret;
+    const len = path.length;
+    if (len === 0) return ret;
     let rootEnd = 0;
-    let code = path22.charCodeAt(0);
-    if (len6 > 1) {
+    let code = path.charCodeAt(0);
+    if (len > 1) {
         if (isPathSeparator(code)) {
             rootEnd = 1;
-            if (isPathSeparator(path22.charCodeAt(1))) {
+            if (isPathSeparator(path.charCodeAt(1))) {
                 let j = 2;
                 let last = j;
-                for(; j < len6; ++j){
-                    if (isPathSeparator(path22.charCodeAt(j))) break;
+                for(; j < len; ++j){
+                    if (isPathSeparator(path.charCodeAt(j))) break;
                 }
-                if (j < len6 && j !== last) {
+                if (j < len && j !== last) {
                     last = j;
-                    for(; j < len6; ++j){
-                        if (!isPathSeparator(path22.charCodeAt(j))) break;
+                    for(; j < len; ++j){
+                        if (!isPathSeparator(path.charCodeAt(j))) break;
                     }
-                    if (j < len6 && j !== last) {
+                    if (j < len && j !== last) {
                         last = j;
-                        for(; j < len6; ++j){
-                            if (isPathSeparator(path22.charCodeAt(j))) break;
+                        for(; j < len; ++j){
+                            if (isPathSeparator(path.charCodeAt(j))) break;
                         }
-                        if (j === len6) {
+                        if (j === len) {
                             rootEnd = j;
                         } else if (j !== last) {
                             rootEnd = j + 1;
@@ -1865,35 +1865,35 @@ function parse(path22) {
                 }
             }
         } else if (isWindowsDeviceRoot(code)) {
-            if (path22.charCodeAt(1) === 58) {
+            if (path.charCodeAt(1) === 58) {
                 rootEnd = 2;
-                if (len6 > 2) {
-                    if (isPathSeparator(path22.charCodeAt(2))) {
-                        if (len6 === 3) {
-                            ret.root = ret.dir = path22;
+                if (len > 2) {
+                    if (isPathSeparator(path.charCodeAt(2))) {
+                        if (len === 3) {
+                            ret.root = ret.dir = path;
                             return ret;
                         }
                         rootEnd = 3;
                     }
                 } else {
-                    ret.root = ret.dir = path22;
+                    ret.root = ret.dir = path;
                     return ret;
                 }
             }
         }
     } else if (isPathSeparator(code)) {
-        ret.root = ret.dir = path22;
+        ret.root = ret.dir = path;
         return ret;
     }
-    if (rootEnd > 0) ret.root = path22.slice(0, rootEnd);
+    if (rootEnd > 0) ret.root = path.slice(0, rootEnd);
     let startDot = -1;
     let startPart = rootEnd;
     let end = -1;
     let matchedSlash = true;
-    let i = path22.length - 1;
+    let i = path.length - 1;
     let preDotState = 0;
     for(; i >= rootEnd; --i){
-        code = path22.charCodeAt(i);
+        code = path.charCodeAt(i);
         if (isPathSeparator(code)) {
             if (!matchedSlash) {
                 startPart = i + 1;
@@ -1914,15 +1914,15 @@ function parse(path22) {
     }
     if (startDot === -1 || end === -1 || preDotState === 0 || preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
         if (end !== -1) {
-            ret.base = ret.name = path22.slice(startPart, end);
+            ret.base = ret.name = path.slice(startPart, end);
         }
     } else {
-        ret.name = path22.slice(startPart, startDot);
-        ret.base = path22.slice(startPart, end);
-        ret.ext = path22.slice(startDot, end);
+        ret.name = path.slice(startPart, startDot);
+        ret.base = path.slice(startPart, end);
+        ret.ext = path.slice(startDot, end);
     }
     if (startPart > 0 && startPart !== rootEnd) {
-        ret.dir = path22.slice(0, startPart - 1);
+        ret.dir = path.slice(0, startPart - 1);
     } else ret.dir = ret.root;
     return ret;
 }
@@ -1931,17 +1931,17 @@ function fromFileUrl(url) {
     if (url.protocol != "file:") {
         throw new TypeError("Must be a file URL.");
     }
-    let path23 = decodeURIComponent(url.pathname.replace(/\//g, "\\").replace(/%(?![0-9A-Fa-f]{2})/g, "%25")).replace(/^\\*([A-Za-z]:)(\\|$)/, "$1\\");
+    let path = decodeURIComponent(url.pathname.replace(/\//g, "\\").replace(/%(?![0-9A-Fa-f]{2})/g, "%25")).replace(/^\\*([A-Za-z]:)(\\|$)/, "$1\\");
     if (url.hostname != "") {
-        path23 = `\\\\${url.hostname}${path23}`;
+        path = `\\\\${url.hostname}${path}`;
     }
-    return path23;
+    return path;
 }
-function toFileUrl(path24) {
-    if (!isAbsolute(path24)) {
+function toFileUrl(path) {
+    if (!isAbsolute(path)) {
         throw new TypeError("Must be an absolute path.");
     }
-    const [, hostname, pathname] = path24.match(/^(?:[/\\]{2}([^/\\]+)(?=[/\\](?:[^/\\]|$)))?(.*)/);
+    const [, hostname, pathname] = path.match(/^(?:[/\\]{2}([^/\\]+)(?=[/\\](?:[^/\\]|$)))?(.*)/);
     const url = new URL("file:///");
     url.pathname = encodeWhitespace(pathname.replace(/%/g, "%25"));
     if (hostname != null && hostname != "localhost") {
@@ -1975,21 +1975,21 @@ function resolve1(...pathSegments) {
     let resolvedPath = "";
     let resolvedAbsolute = false;
     for(let i = pathSegments.length - 1; i >= -1 && !resolvedAbsolute; i--){
-        let path25;
-        if (i >= 0) path25 = pathSegments[i];
+        let path;
+        if (i >= 0) path = pathSegments[i];
         else {
-            const { Deno  } = globalThis;
-            if (typeof Deno?.cwd !== "function") {
+            const { Deno: Deno1  } = globalThis;
+            if (typeof Deno1?.cwd !== "function") {
                 throw new TypeError("Resolved a relative path without a CWD.");
             }
-            path25 = Deno.cwd();
+            path = Deno1.cwd();
         }
-        assertPath(path25);
-        if (path25.length === 0) {
+        assertPath(path);
+        if (path.length === 0) {
             continue;
         }
-        resolvedPath = `${path25}/${resolvedPath}`;
-        resolvedAbsolute = path25.charCodeAt(0) === CHAR_FORWARD_SLASH;
+        resolvedPath = `${path}/${resolvedPath}`;
+        resolvedAbsolute = path.charCodeAt(0) === CHAR_FORWARD_SLASH;
     }
     resolvedPath = normalizeString(resolvedPath, !resolvedAbsolute, "/", isPosixPathSeparator);
     if (resolvedAbsolute) {
@@ -1998,30 +1998,30 @@ function resolve1(...pathSegments) {
     } else if (resolvedPath.length > 0) return resolvedPath;
     else return ".";
 }
-function normalize1(path26) {
-    assertPath(path26);
-    if (path26.length === 0) return ".";
-    const isAbsolute1 = path26.charCodeAt(0) === 47;
-    const trailingSeparator = path26.charCodeAt(path26.length - 1) === 47;
-    path26 = normalizeString(path26, !isAbsolute1, "/", isPosixPathSeparator);
-    if (path26.length === 0 && !isAbsolute1) path26 = ".";
-    if (path26.length > 0 && trailingSeparator) path26 += "/";
-    if (isAbsolute1) return `/${path26}`;
-    return path26;
+function normalize1(path) {
+    assertPath(path);
+    if (path.length === 0) return ".";
+    const isAbsolute = path.charCodeAt(0) === 47;
+    const trailingSeparator = path.charCodeAt(path.length - 1) === 47;
+    path = normalizeString(path, !isAbsolute, "/", isPosixPathSeparator);
+    if (path.length === 0 && !isAbsolute) path = ".";
+    if (path.length > 0 && trailingSeparator) path += "/";
+    if (isAbsolute) return `/${path}`;
+    return path;
 }
-function isAbsolute1(path27) {
-    assertPath(path27);
-    return path27.length > 0 && path27.charCodeAt(0) === 47;
+function isAbsolute1(path) {
+    assertPath(path);
+    return path.length > 0 && path.charCodeAt(0) === 47;
 }
 function join1(...paths) {
     if (paths.length === 0) return ".";
     let joined;
-    for(let i = 0, len7 = paths.length; i < len7; ++i){
-        const path28 = paths[i];
-        assertPath(path28);
-        if (path28.length > 0) {
-            if (!joined) joined = path28;
-            else joined += `/${path28}`;
+    for(let i = 0, len = paths.length; i < len; ++i){
+        const path = paths[i];
+        assertPath(path);
+        if (path.length > 0) {
+            if (!joined) joined = path;
+            else joined += `/${path}`;
         }
     }
     if (!joined) return ".";
@@ -2085,17 +2085,17 @@ function relative1(from, to) {
         return to.slice(toStart);
     }
 }
-function toNamespacedPath1(path29) {
-    return path29;
+function toNamespacedPath1(path) {
+    return path;
 }
-function dirname1(path30) {
-    assertPath(path30);
-    if (path30.length === 0) return ".";
-    const hasRoot = path30.charCodeAt(0) === 47;
+function dirname1(path) {
+    assertPath(path);
+    if (path.length === 0) return ".";
+    const hasRoot = path.charCodeAt(0) === 47;
     let end = -1;
     let matchedSlash = true;
-    for(let i = path30.length - 1; i >= 1; --i){
-        if (path30.charCodeAt(i) === 47) {
+    for(let i = path.length - 1; i >= 1; --i){
+        if (path.charCodeAt(i) === 47) {
             if (!matchedSlash) {
                 end = i;
                 break;
@@ -2106,23 +2106,23 @@ function dirname1(path30) {
     }
     if (end === -1) return hasRoot ? "/" : ".";
     if (hasRoot && end === 1) return "//";
-    return path30.slice(0, end);
+    return path.slice(0, end);
 }
-function basename1(path31, ext = "") {
+function basename1(path, ext = "") {
     if (ext !== undefined && typeof ext !== "string") {
         throw new TypeError('"ext" argument must be a string');
     }
-    assertPath(path31);
+    assertPath(path);
     let start = 0;
     let end = -1;
     let matchedSlash = true;
     let i;
-    if (ext !== undefined && ext.length > 0 && ext.length <= path31.length) {
-        if (ext.length === path31.length && ext === path31) return "";
+    if (ext !== undefined && ext.length > 0 && ext.length <= path.length) {
+        if (ext.length === path.length && ext === path) return "";
         let extIdx = ext.length - 1;
         let firstNonSlashEnd = -1;
-        for(i = path31.length - 1; i >= 0; --i){
-            const code = path31.charCodeAt(i);
+        for(i = path.length - 1; i >= 0; --i){
+            const code = path.charCodeAt(i);
             if (code === 47) {
                 if (!matchedSlash) {
                     start = i + 1;
@@ -2146,11 +2146,11 @@ function basename1(path31, ext = "") {
             }
         }
         if (start === end) end = firstNonSlashEnd;
-        else if (end === -1) end = path31.length;
-        return path31.slice(start, end);
+        else if (end === -1) end = path.length;
+        return path.slice(start, end);
     } else {
-        for(i = path31.length - 1; i >= 0; --i){
-            if (path31.charCodeAt(i) === 47) {
+        for(i = path.length - 1; i >= 0; --i){
+            if (path.charCodeAt(i) === 47) {
                 if (!matchedSlash) {
                     start = i + 1;
                     break;
@@ -2161,18 +2161,18 @@ function basename1(path31, ext = "") {
             }
         }
         if (end === -1) return "";
-        return path31.slice(start, end);
+        return path.slice(start, end);
     }
 }
-function extname1(path32) {
-    assertPath(path32);
+function extname1(path) {
+    assertPath(path);
     let startDot = -1;
     let startPart = 0;
     let end = -1;
     let matchedSlash = true;
     let preDotState = 0;
-    for(let i = path32.length - 1; i >= 0; --i){
-        const code = path32.charCodeAt(i);
+    for(let i = path.length - 1; i >= 0; --i){
+        const code = path.charCodeAt(i);
         if (code === 47) {
             if (!matchedSlash) {
                 startPart = i + 1;
@@ -2194,7 +2194,7 @@ function extname1(path32) {
     if (startDot === -1 || end === -1 || preDotState === 0 || preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
         return "";
     }
-    return path32.slice(startDot, end);
+    return path.slice(startDot, end);
 }
 function format1(pathObject) {
     if (pathObject === null || typeof pathObject !== "object") {
@@ -2202,8 +2202,8 @@ function format1(pathObject) {
     }
     return _format("/", pathObject);
 }
-function parse1(path33) {
-    assertPath(path33);
+function parse1(path) {
+    assertPath(path);
     const ret = {
         root: "",
         dir: "",
@@ -2211,10 +2211,10 @@ function parse1(path33) {
         ext: "",
         name: ""
     };
-    if (path33.length === 0) return ret;
-    const isAbsolute2 = path33.charCodeAt(0) === 47;
+    if (path.length === 0) return ret;
+    const isAbsolute = path.charCodeAt(0) === 47;
     let start;
-    if (isAbsolute2) {
+    if (isAbsolute) {
         ret.root = "/";
         start = 1;
     } else {
@@ -2224,10 +2224,10 @@ function parse1(path33) {
     let startPart = 0;
     let end = -1;
     let matchedSlash = true;
-    let i = path33.length - 1;
+    let i = path.length - 1;
     let preDotState = 0;
     for(; i >= start; --i){
-        const code = path33.charCodeAt(i);
+        const code = path.charCodeAt(i);
         if (code === 47) {
             if (!matchedSlash) {
                 startPart = i + 1;
@@ -2248,24 +2248,24 @@ function parse1(path33) {
     }
     if (startDot === -1 || end === -1 || preDotState === 0 || preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
         if (end !== -1) {
-            if (startPart === 0 && isAbsolute2) {
-                ret.base = ret.name = path33.slice(1, end);
+            if (startPart === 0 && isAbsolute) {
+                ret.base = ret.name = path.slice(1, end);
             } else {
-                ret.base = ret.name = path33.slice(startPart, end);
+                ret.base = ret.name = path.slice(startPart, end);
             }
         }
     } else {
-        if (startPart === 0 && isAbsolute2) {
-            ret.name = path33.slice(1, startDot);
-            ret.base = path33.slice(1, end);
+        if (startPart === 0 && isAbsolute) {
+            ret.name = path.slice(1, startDot);
+            ret.base = path.slice(1, end);
         } else {
-            ret.name = path33.slice(startPart, startDot);
-            ret.base = path33.slice(startPart, end);
+            ret.name = path.slice(startPart, startDot);
+            ret.base = path.slice(startPart, end);
         }
-        ret.ext = path33.slice(startDot, end);
+        ret.ext = path.slice(startDot, end);
     }
-    if (startPart > 0) ret.dir = path33.slice(0, startPart - 1);
-    else if (isAbsolute2) ret.dir = "/";
+    if (startPart > 0) ret.dir = path.slice(0, startPart - 1);
+    else if (isAbsolute) ret.dir = "/";
     return ret;
 }
 function fromFileUrl1(url) {
@@ -2275,12 +2275,12 @@ function fromFileUrl1(url) {
     }
     return decodeURIComponent(url.pathname.replace(/%(?![0-9A-Fa-f]{2})/g, "%25"));
 }
-function toFileUrl1(path34) {
-    if (!isAbsolute1(path34)) {
+function toFileUrl1(path) {
+    if (!isAbsolute1(path)) {
         throw new TypeError("Must be an absolute path.");
     }
     const url = new URL("file:///");
-    url.pathname = encodeWhitespace(path34.replace(/%/g, "%25").replace(/\\/g, "%5C"));
+    url.pathname = encodeWhitespace(path.replace(/%/g, "%25").replace(/\\/g, "%5C"));
     return url;
 }
 const mod1 = {
@@ -2373,13 +2373,13 @@ class TextProtoReader {
         return r === null ? null : line;
     }
     skipSpace(l) {
-        let n9 = 0;
+        let n = 0;
         for (const val of l){
             if (!WHITESPACES.includes(val)) {
-                n9++;
+                n++;
             }
         }
-        return n9;
+        return n;
     }
     r;
 }
@@ -2549,8 +2549,8 @@ class MultipartReader {
             }
             buf.reset();
             if (!p.fileName) {
-                const n10 = await copyN(p, buf, maxValueBytes);
-                maxValueBytes -= n10;
+                const n = await copyN(p, buf, maxValueBytes);
+                maxValueBytes -= n;
                 if (maxValueBytes < 0) {
                     throw new RangeError("message too large");
                 }
@@ -2566,10 +2566,10 @@ class MultipartReader {
                 continue;
             }
             let formFile;
-            const n11 = await copyN(p, buf, maxValueBytes);
+            const n1 = await copyN(p, buf, maxValueBytes);
             const contentType = p.headers.get("content-type");
             assert(contentType != null, "content-type must be set");
-            if (n11 > maxMemory) {
+            if (n1 > maxMemory) {
                 const ext = extname2(p.fileName);
                 const filepath = await Deno.makeTempFile({
                     dir: options?.dir ?? ".",
@@ -2602,13 +2602,13 @@ class MultipartReader {
                     content: buf.bytes(),
                     size: buf.length
                 };
-                maxMemory -= n11;
-                maxValueBytes -= n11;
+                maxMemory -= n1;
+                maxValueBytes -= n1;
             }
             if (formFile) {
-                const mapVal = fileMap.get(p.formName);
-                if (mapVal !== undefined) {
-                    mapVal.push(formFile);
+                const mapVal1 = fileMap.get(p.formName);
+                if (mapVal1 !== undefined) {
+                    mapVal1.push(formFile);
                 } else {
                     fileMap.set(p.formName, [
                         formFile
