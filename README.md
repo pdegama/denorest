@@ -5,7 +5,7 @@
 Lightweight, Minimalist Framework For REST API 🦕 🚀
 
 ```console
-$ deno run https://raw.githubusercontent.com/slectgit/denorest/v4.0/example/hello.ts
+$ deno run --allow-net https://deno.land/x/denorest@v4.0alpha3/example/hello.ts
 ```
 
 ```typescript
