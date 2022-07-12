@@ -140,4 +140,4 @@ class Server {
   };
 }
 
-export default Server; // export server
+export Server; // export server
