@@ -5,7 +5,7 @@
 Lightweight, Minimalist Framework For REST API 🦕 🚀
 
 ```console
-$ deno run https://raw.githubusercontent.com/slectgit/denorest/v3.1/example/hello.ts
+$ deno run https://raw.githubusercontent.com/slectgit/denorest/v4.0/example/hello.ts
 ```
 
 ```typescript
@@ -14,7 +14,7 @@ import {
   Res,
   Router,
   WebApp,
-} from "https://deno.land/x/denorest@v3.1/mod.ts";
+} from "https://deno.land/x/denorest@v4.0/mod.ts";
 
 const app = new WebApp();
 const router = new Router();
@@ -29,7 +29,6 @@ app.listen(8080);
 
 ## Features
 
-- Support Javascript and TypeScript
 - Robust routing
 - Focus on high performance
 - Content negotiation
@@ -45,7 +44,7 @@ making it a great solution for HTTP APIs.
 
 ## Examples
 
-#### TypeScript Example
+#### Example
 
 ```typescript
 import {
@@ -53,29 +52,13 @@ import {
   Res,
   Router,
   WebApp,
-} from "https://deno.land/x/denorest@v3.1/mod.ts";
+} from "https://deno.land/x/denorest@v4.0/mod.ts";
 
 const app = new WebApp();
 const router = new Router();
 
 router.get("/", (_req: Req, res: Res) => {
   res.reply = "Hello, TypeScript!";
-});
-
-app.set(router);
-app.listen(8080);
-```
-
-#### JavaScript Example
-
-```javascript
-import { Router, WebApp } from "https://deno.land/x/denorest@v3.1/mod.js";
-
-const app = new WebApp();
-const router = new Router();
-
-router.get("/", (_req, res) => {
-  res.reply = "Hello, JavaScript!";
 });
 
 app.set(router);

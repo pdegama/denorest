@@ -1,7 +1,7 @@
 /*!
  *
  * Denorest
- * Copyright (c) 2022 Parthka <elparthka.2005@gmail.com>
+ * Copyright (c) 2022 Parthka <parthka.2005@gmail.com>
  * MIT Licensed
  *
  */
