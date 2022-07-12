@@ -1,7 +1,7 @@
 // Copyright 2022 Parthka. All rights reserved. MIT license.
 
 /** Routes data type */
-type Routes = {
+export type Routes = {
   path: string;
   reg: RegExp;
   method: string;
@@ -9,14 +9,14 @@ type Routes = {
 };
 
 /** The second parameter of the handler function is Res. */
-type Res = {
+export type Res = {
   reply: BodyInit;
   headers: Record<string, string>;
   status: number;
 };
 
 /** The first parameter of the handler function is Req. */
-type Req = {
+export type Req = {
   body?: string;
   headers?: Headers;
   method?: string;
@@ -24,6 +24,3 @@ type Req = {
   reg?: RegExp;
   state: Record<string | number, string | number | boolean>;
 };
-
-// export data type
-export type { Req, Res, Routes };

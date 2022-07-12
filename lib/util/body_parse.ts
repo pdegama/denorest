@@ -111,7 +111,7 @@ const getForm = async (
 };
 
 /** Parse Request Payload function. */
-export default async (
+export const bodyParse = async (
   req: Req,
 ): Promise<any> => {
   if (req.body && req.headers) {

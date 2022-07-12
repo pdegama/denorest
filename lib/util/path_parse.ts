@@ -3,7 +3,7 @@
 import { Req } from "../types.ts";
 
 /** Get Query And Parameter Function. */
-export default (req: Req): Record<string, Record<string, string>> => {
+export const pathParse = (req: Req): Record<string, Record<string, string>> => {
   if (req.url && req.reg) {
     let dPath;
     try {

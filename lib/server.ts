@@ -5,7 +5,7 @@ import Router from "./router.ts";
 import { Req, Res, Routes } from "./types.ts";
 
 /** A class which registers router. */
-class Server {
+class WebApp {
   public routes: Routes[] = []; // all routes
   private dHeaders: Record<string, string> = {}; // default headers
   private allowME = false; // more Exp var
@@ -140,4 +140,4 @@ class Server {
   };
 }
 
-export Server; // export server
+export { WebApp }; // export server

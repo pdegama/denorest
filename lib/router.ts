@@ -1,6 +1,6 @@
 // Copyright 2022 Parthka. All rights reserved. MIT license.
 
-import expParse from "./util/path_exp.ts";
+import { expParse } from "./util/path_exp.ts";
 import { Req, Res, Routes } from "./types.ts";
 
 /** Use the Router class to create modular, mountable route handlers. */
@@ -155,4 +155,4 @@ class Router {
   };
 }
 
-export default Router; // export router
+export { Router }; // export router

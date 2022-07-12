@@ -1,7 +1,7 @@
 // Copyright 2022 Parthka. All rights reserved. MIT license.
 
 /** Route path to RegExp Function. */
-export default (path: string, moreExp?: boolean): RegExp => {
+export const expParse = (path: string, moreExp?: boolean): RegExp => {
   let str = path.charAt(0) !== "/" ? "^/" : "^";
 
   for (let i = 0; i < path.length; i++) {
