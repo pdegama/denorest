@@ -5,7 +5,7 @@
 Lightweight, Minimalist Framework For REST API 🦕 🚀
 
 ```console
-$ deno run --allow-net https://deno.land/x/denorest@v4.0alpha3/example/hello.ts
+$ deno run --allow-net https://deno.land/x/denorest@v4.1/example/hello.ts
 ```
 
 ```typescript
@@ -14,7 +14,7 @@ import {
   Res,
   Router,
   WebApp,
-} from "https://deno.land/x/denorest@v4.0/mod.ts";
+} from "https://deno.land/x/denorest@v4.1/mod.ts";
 
 const app = new WebApp();
 const router = new Router();
@@ -52,7 +52,7 @@ import {
   Res,
   Router,
   WebApp,
-} from "https://deno.land/x/denorest@v4.0/mod.ts";
+} from "https://deno.land/x/denorest@v4.1/mod.ts";
 
 const app = new WebApp();
 const router = new Router();
