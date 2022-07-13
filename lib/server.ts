@@ -1,7 +1,7 @@
 // Copyright 2022 Parthka. All rights reserved. MIT license.
 
 import { serve, serveTls } from "https://deno.land/std@0.140.0/http/server.ts";
-import Router from "./router.ts";
+import { Router } from "./router.ts";
 import { Req, Res, Routes } from "./types.ts";
 
 /** A class which registers router. */
